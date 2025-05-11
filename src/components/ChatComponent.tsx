@@ -161,13 +161,12 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
         </motion.button>
       </div>      {/* Chat panel */}
       <AnimatePresence>
-        {isOpen && (
-          <motion.div
+        {isOpen && (          <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-24 right-6 z-40 w-80 sm:w-96 max-h-[70vh] bg-white rounded-xl shadow-xl flex flex-col border border-gray-100 overflow-hidden"
+            className="fixed bottom-24 right-6 z-40 w-80 sm:w-96 md:w-[32rem] lg:w-[36rem] max-h-[70vh] bg-white rounded-xl shadow-xl flex flex-col border border-gray-100 overflow-hidden"
             style={{ boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
           >
             {/* Chat header */}
@@ -215,16 +214,15 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
                 </div>
               )}
               
-              {messages.filter(m => m.role !== 'system').map((message, index) => (                <div key={index} className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
-                  <div 
-                    className={`inline-block p-3 rounded-2xl max-w-[80%] ${
+              {messages.filter(m => m.role !== 'system').map((message, index) => (                <div key={index} className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>                  <div 
+                    className={`inline-block p-3 rounded-2xl max-w-[80%] md:max-w-[85%] ${
                       message.role === 'user' 
                         ? 'bg-brand-100 text-brand-700 border border-brand-200' 
                         : 'bg-white text-gray-700 border border-gray-100'
                     }`}
                     style={{ 
                       boxShadow: message.role === 'user' ? '0 2px 4px rgba(0, 0, 0, 0.05)' : '0 2px 8px rgba(0, 0, 0, 0.05)'
-                    }}                  >                    {message.role === 'assistant' ? (
+                    }}>                    {message.role === 'assistant' ? (
                       <div className="prose prose-sm max-w-none">
                         <ReactMarkdown 
                           components={{
