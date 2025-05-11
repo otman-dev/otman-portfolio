@@ -10,31 +10,75 @@ export default function Home() {
   const [activeLink, setActiveLink] = useState('');
   
   useEffect(() => {
+    // Add a small debounce to scroll events for better performance
+    let scrollTimeout: NodeJS.Timeout | null = null;
+    
     const handleScroll = () => {
-      // Determine which section is active for nav highlighting
-      const sections = ['home', 'about', 'work', 'experience', 'skills', 'certifications', 'contact'];
-      let currentSection = '';
-      
-      // Set home as active when at the top
-      if (window.scrollY < 100) {
-        currentSection = 'home';
+      // Clear previous timeout
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
       }
       
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 150) {
-            currentSection = section;
+      // Set a small timeout to debounce scroll events
+      scrollTimeout = setTimeout(() => {
+        // Determine which section is active for nav highlighting
+        const sections = ['home', 'about', 'work', 'experience', 'skills', 'certifications', 'contact'];
+        let currentSection = '';
+        
+        // Set home as active when at the top
+        if (window.scrollY < 100) {
+          currentSection = 'home';
+          setActiveLink('home');
+          return;
+        }
+        
+        // Calculate which section takes up most of the viewport
+        let maxVisibleSection = '';
+        let maxVisibleHeight = 0;
+        
+        for (const section of sections) {
+          const element = document.getElementById(section);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            
+            // Calculate how much of the section is visible in the viewport
+            const visibleTop = Math.max(0, rect.top);
+            const visibleBottom = Math.min(window.innerHeight, rect.bottom);
+            const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+            
+            // If this section has more visible height than previous max, update
+            if (visibleHeight > maxVisibleHeight) {
+              maxVisibleHeight = visibleHeight;
+              maxVisibleSection = section;
+            }
+            
+            // Alternative approach: If the element is near the top of the viewport
+            if (rect.top <= window.innerHeight * 0.3 && rect.bottom >= window.innerHeight * 0.3) {
+              currentSection = section;
+            }
           }
         }
-      }
-      setActiveLink(currentSection);
+        
+        // If we didn't find a section using the second approach, use the most visible one
+        if (!currentSection && maxVisibleSection) {
+          currentSection = maxVisibleSection;
+        }
+        
+        if (currentSection) {
+          setActiveLink(currentSection);
+        }
+      }, 100); // Small debounce delay
     };
     
-    window.addEventListener('scroll', handleScroll);
+    // Initial check
+    handleScroll();
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
     };
   }, []);
 
