@@ -65,13 +65,13 @@ Your task is to assist visitors on Mouhibeddine's portfolio website by answering
       inputRef.current.focus();
     }
   }, [isOpen]);
-
   // Send message to API
   const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+    const currentInput = input.trim();
+    if (!currentInput || isLoading) return;
 
     // Add user message to chat
-    const userMessage = { role: 'user' as const, content: input.trim() };
+    const userMessage = { role: 'user' as const, content: currentInput };
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
@@ -178,9 +178,34 @@ Your task is to assist visitors on Mouhibeddine's portfolio website by answering
                 </svg>
               </button>
             </div>
-            
-            {/* Chat messages */}
+              {/* Chat messages */}
             <div className="flex-1 p-5 overflow-y-auto bg-gray-50">
+              {/* FAQ suggestion buttons - show only when first opened and no user messages */}
+              {messages.filter(m => m.role === 'user').length === 0 && (
+                <div className="mb-6">
+                  <div className="text-sm text-gray-500 mb-2">Common questions:</div>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      "Tell me about Otman's background",
+                      "What projects has Otman worked on?",
+                      "What skills does Otman have?",
+                      "How can I contact Otman?"
+                    ].map((faq, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          setInput(faq);
+                          setTimeout(() => handleSend(), 100);
+                        }}
+                        className="px-3 py-1.5 bg-white text-sm text-brand-600 border border-brand-200 rounded-full hover:bg-brand-50 transition-colors"
+                      >
+                        {faq}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
               {messages.filter(m => m.role !== 'system').map((message, index) => (
                 <div key={index} className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
                   <div 
