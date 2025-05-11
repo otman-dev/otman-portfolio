@@ -1,0 +1,250 @@
+"use client";
+
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+interface Message {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
+
+const ChatComponent: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);  const [messages, setMessages] = useState<Message[]>([
+    {
+      role: 'system',
+      content: `You are an AI assistant for Mouhibeddine Otman, a professional with expertise in AI Research, IoT Systems, Full-Stack Development, and Data Engineering.
+
+ABOUT MOUHIBEDDINE OTMAN:
+- Education: Computer Engineering, University of Carthage, 2020-2024
+- Current Role: AI & IoT Research Engineer
+- Key Skills: AI Research, IoT Systems, Full-Stack Development, Data Engineering
+- Languages: Python, JavaScript, TypeScript, C/C++, Java
+- Frameworks & Tools: React, Next.js, Node.js, TensorFlow, PyTorch, Docker, AWS
+- Projects: 
+  1. Smart Home Automation Platform - An IoT system for home automation using custom sensors and ML algorithms
+  2. Portfolio Website - A Next.js-based personal website with AI assistant integration
+  3. AI-Driven Medical Diagnosis Tool - Developed computer vision algorithms for early disease detection
+  4. Robotics Control Systems - Created embedded software for autonomous robot navigation
+  5. Data Analytics Dashboard - Built interactive visualization tools for complex datasets
+- Work Experience: Research Assistant at IoT Lab (2022-2023), Software Engineering Intern at Tech Solutions (2023)
+- Certifications: AWS Certified Developer, TensorFlow Developer Certificate, Google Cloud Professional
+- Research Interests: Edge AI, Computer Vision, Human-Computer Interaction
+- Contact: contact@otmanmouhib.com
+
+Your task is to assist visitors on Mouhibeddine's portfolio website by answering questions about his background, skills, projects, and expertise. Be friendly, professional, and concise in your answers. If asked about something not related to Mouhibeddine or his professional work, politely redirect the conversation to relevant topics.`
+    },
+    {
+      role: 'assistant',
+      content: 'Hi there! 👋 I\'m your friendly assistant on Otman\'s portfolio. Feel free to ask me anything about his skills, projects, or experience. How can I help you today?'
+    }
+  ]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Scroll to bottom of messages
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Handle input change and allow for Enter key to send
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
+    if (isOpen && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isOpen]);
+
+  // Send message to API
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
+
+    // Add user message to chat
+    const userMessage = { role: 'user' as const, content: input.trim() };
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setIsLoading(true);
+
+    try {
+      // Filter out system messages for the API call
+      const messagesToSend = [...messages, userMessage].map(({ role, content }) => ({
+        role,
+        content,
+      }));
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ messages: messagesToSend }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response');
+      }
+
+      const data = await response.json();
+      
+      // Add assistant response to chat
+      setMessages(prev => [
+        ...prev,
+        { role: 'assistant', content: data.content }
+      ]);
+    } catch (error) {
+      console.error('Error:', error);
+      setMessages(prev => [
+        ...prev,
+        { role: 'assistant', content: 'Sorry, I encountered an error. Please try again later.' }
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  return (
+    <>
+      {/* Chat button with label */}
+      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end">
+        {!isOpen && (
+          <div className="mb-2 px-3 py-1.5 bg-white rounded-full shadow-md text-sm font-medium text-brand-500">
+            Ask me anything!
+          </div>
+        )}
+        <motion.button
+          onClick={() => setIsOpen(prev => !prev)}
+          className="p-4 rounded-full bg-white text-brand-500 shadow-lg border-2 border-brand-200 hover:shadow-xl hover:border-brand-300 transition-all duration-200"
+          style={{ 
+            width: "60px", 
+            height: "60px",
+            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" 
+          }}
+          whileHover={{ scale: 1.05, y: -3 }}
+          whileTap={{ scale: 0.95 }}
+          aria-label={isOpen ? "Close chat" : "Open chat"}
+        >
+          {isOpen ? (
+            // X icon
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          ) : (
+            // Enhanced Chat icon with notification dot
+            <div className="relative">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <span className="absolute -top-1 -right-1 h-4 w-4 bg-green-400 rounded-full animate-pulse border-2 border-white shadow-sm"></span>
+            </div>
+          )}
+        </motion.button>
+      </div>      {/* Chat panel */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-24 right-6 z-40 w-80 sm:w-96 max-h-[70vh] bg-white rounded-xl shadow-xl flex flex-col border border-gray-100 overflow-hidden"
+            style={{ boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
+          >
+            {/* Chat header */}
+            <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 flex items-center justify-between">
+              <h3 className="font-medium text-lg text-brand-500 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-500">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                Chat Assistant
+              </h3>
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            
+            {/* Chat messages */}
+            <div className="flex-1 p-5 overflow-y-auto bg-gray-50">
+              {messages.filter(m => m.role !== 'system').map((message, index) => (
+                <div key={index} className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
+                  <div 
+                    className={`inline-block p-3 rounded-2xl max-w-[80%] ${
+                      message.role === 'user' 
+                        ? 'bg-brand-100 text-brand-700 border border-brand-200' 
+                        : 'bg-white text-gray-700 border border-gray-100'
+                    }`}
+                    style={{ 
+                      boxShadow: message.role === 'user' ? '0 2px 4px rgba(0, 0, 0, 0.05)' : '0 2px 8px rgba(0, 0, 0, 0.05)'
+                    }}
+                  >
+                    {message.content}
+                  </div>
+                </div>
+              ))}
+              {isLoading && (
+                <div className="mb-4 text-left">
+                  <div className="inline-block p-3 rounded-2xl bg-white text-gray-500 max-w-[80%] border border-gray-100 shadow-sm">
+                    <div className="flex items-center space-x-2">
+                      <div className="h-2 w-2 bg-brand-300 rounded-full animate-pulse"></div>
+                      <div className="h-2 w-2 bg-brand-400 rounded-full animate-pulse delay-75"></div>
+                      <div className="h-2 w-2 bg-brand-500 rounded-full animate-pulse delay-150"></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+              {/* Chat input */}
+            <div className="p-4 border-t border-gray-200 bg-white">
+              <div className="flex space-x-3">
+                <textarea
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  className="flex-1 py-2.5 px-3.5 border border-gray-200 rounded-full bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-300 focus:border-brand-300 resize-none shadow-sm"
+                  placeholder="Type a message..."
+                  rows={1}
+                  style={{ minHeight: "44px" }}
+                />
+                <button
+                  onClick={handleSend}
+                  disabled={isLoading || !input.trim()}
+                  className={`p-3 rounded-full shadow-sm flex items-center justify-center ${
+                    isLoading || !input.trim() 
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200' 
+                      : 'bg-brand-100 text-brand-600 hover:bg-brand-200 border border-brand-200 hover:border-brand-300 transition-colors duration-200'
+                  }`}
+                  aria-label="Send message"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
+
+export default ChatComponent;
