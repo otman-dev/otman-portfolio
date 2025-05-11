@@ -2,17 +2,17 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiUser, FiBriefcase, FiCode, FiAward, FiPhone, FiHome, FiStar } from 'react-icons/fi';
+import { Icons } from './ui/icons';
 
-// Navigation items with icons
+// Navigation items with icons from our unified icon system
 const navItems = [
-  { id: 'home', label: 'Home', icon: <FiHome /> },
-  { id: 'about', label: 'About', icon: <FiUser /> },
-  { id: 'work', label: 'Work', icon: <FiBriefcase /> },
-  { id: 'experience', label: 'Experience', icon: <FiAward /> },
-  { id: 'skills', label: 'Skills', icon: <FiCode /> },
-  { id: 'certifications', label: 'Certs', icon: <FiStar /> },
-  { id: 'contact', label: 'Contact', icon: <FiPhone /> }
+  { id: 'home', label: 'Home', icon: <Icons.Home /> },
+  { id: 'about', label: 'About', icon: <Icons.User /> },
+  { id: 'work', label: 'Work', icon: <Icons.Briefcase /> },
+  { id: 'experience', label: 'Experience', icon: <Icons.Award /> },
+  { id: 'skills', label: 'Skills', icon: <Icons.Code /> },
+  { id: 'certifications', label: 'Certs', icon: <Icons.Star /> },
+  { id: 'contact', label: 'Contact', icon: <Icons.Phone /> }
 ];
 
 interface FloatingNavigationProps {

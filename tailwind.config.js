@@ -17,35 +17,105 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    // Standardized spacing system based on 8px increments
+    spacing: {
+      '0': '0px',
+      '1': '4px',
+      '2': '8px',
+      '3': '12px',
+      '4': '16px',
+      '5': '20px',
+      '6': '24px',
+      '7': '28px',
+      '8': '32px',
+      '9': '36px',
+      '10': '40px',
+      '11': '44px',
+      '12': '48px',
+      '14': '56px',
+      '16': '64px',
+      '20': '80px',
+      '24': '96px',
+      '28': '112px',
+      '32': '128px',
+      '36': '144px',
+      '40': '160px',
+    },
     extend: {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
+        heading: ['var(--font-space)', ...fontFamily.sans],
+        display: ['var(--font-quicksand)', ...fontFamily.sans],
+      },
+      fontSize: {
+        // Improved type hierarchy with more distinct sizes
+        'display-lg': ['4.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' }],
+        'display': ['3.75rem', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' }],
+        'display-sm': ['3rem', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '600' }],
+        'h1': ['2.5rem', { lineHeight: '1.2', letterSpacing: '-0.01em', fontWeight: '600' }],
+        'h2': ['2rem', { lineHeight: '1.2', letterSpacing: '-0.01em', fontWeight: '600' }],
+        'h3': ['1.5rem', { lineHeight: '1.3', letterSpacing: '0em', fontWeight: '600' }],
+        'h4': ['1.25rem', { lineHeight: '1.4', letterSpacing: '0em', fontWeight: '600' }],
+        'h5': ['1.125rem', { lineHeight: '1.4', letterSpacing: '0em', fontWeight: '600' }],
+        'h6': ['1rem', { lineHeight: '1.5', letterSpacing: '0em', fontWeight: '600' }],
       },
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+        // 60-30-10 color ratio implementation with a cohesive color system
+        // Primary color - 60% (main blue)
+        brand: {
+          50: '#eef5ff',
+          100: '#e0edff', 
+          200: '#c7daff',
+          300: '#a6c1ff',
+          400: '#819dff',
+          500: '#3b82f6', // Primary color
+          600: '#2563eb', // Primary hover
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
+          950: '#172554',
         },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
+        // Secondary color - 30% (purple)
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          50: '#f4f4ff',
+          100: '#e9e9ff',
+          200: '#d5d5ff',
+          300: '#b3b3ff',
+          400: '#8a8aff',
+          500: '#4f46e5', // Secondary color
+          600: '#4338ca',
+          700: '#3730a3',
+          800: '#312e81',
+          900: '#2c2879',
+          950: '#1a1854',
+        },
+        // Accent color - 10% (for highlights and calls to action)
+        highlight: {
+          50: '#ecfdf5',
+          100: '#d1fae5',
+          200: '#a7f3d0',
+          300: '#6ee7b7',
+          400: '#34d399',
+          500: '#10b981',
+          600: '#059669',
+          700: '#047857',
+          800: '#065f46',
+          900: '#064e3b',
+          950: '#022c22',
+        },
+        // Neutral colors for text and backgrounds
+        neutral: {
+          50: '#fafafa',
+          100: '#f5f5f5',
+          200: '#e5e5e5',
+          300: '#d4d4d4',
+          400: '#a3a3a3',
+          500: '#737373',
+          600: '#525252',
+          700: '#404040',
+          800: '#262626',
+          900: '#171717',
+          950: '#0a0a0a',
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",

@@ -41,9 +41,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body
         className={`${poppins.variable} ${inter.variable} ${spaceGrotesk.variable} ${quicksand.variable} font-sans antialiased`}
       >
+        {/* Adding subtle texture layer to the entire page */}
+        <div className="fixed inset-0 pointer-events-none texture-dots z-[-1]"></div>
         {children}
       </body>
     </html>

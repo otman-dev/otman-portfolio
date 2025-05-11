@@ -1,36 +1,131 @@
 @import "tailwindcss";
 
+/* Color System - Implementing a 60-30-10 ratio */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  /* Adding additional theme colors for consistency */
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
-  --secondary: #4f46e5;
-}
-
-/* Theme variables */
-:root {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  /* Primary (60%) */
+  --brand-50: #eef5ff;
+  --brand-100: #e0edff;
+  --brand-200: #c7daff;
+  --brand-300: #a6c1ff;
+  --brand-400: #819dff;
+  --brand-500: #3b82f6; /* Primary color */
+  --brand-600: #2563eb; /* Primary hover */
+  --brand-700: #1d4ed8;
+  --brand-800: #1e40af;
+  --brand-900: #1e3a8a;
+  --brand-950: #172554;
+  
+  /* Secondary (30%) */
+  --accent-50: #f4f4ff;
+  --accent-100: #e9e9ff;
+  --accent-200: #d5d5ff;
+  --accent-300: #b3b3ff;
+  --accent-400: #8a8aff;
+  --accent-500: #4f46e5; /* Secondary color */
+  --accent-600: #4338ca;
+  --accent-700: #3730a3;
+  --accent-800: #312e81;
+  --accent-900: #2c2879;
+  --accent-950: #1a1854;
+  
+  /* Accent (10%) */
+  --highlight-400: #34d399;
+  --highlight-500: #10b981;
+  --highlight-600: #059669;
+  
+  /* Neutral */
+  --neutral-50: #fafafa;
+  --neutral-100: #f5f5f5;
+  --neutral-200: #e5e5e5;
+  --neutral-300: #d4d4d4;
+  --neutral-400: #a3a3a3;
+  --neutral-500: #737373;
+  --neutral-600: #525252;
+  --neutral-700: #404040;
+  --neutral-800: #262626;
+  --neutral-900: #171717;
+  --neutral-950: #0a0a0a;
+  
+  /* Base colors */
+  --background: var(--neutral-50);
+  --foreground: var(--neutral-900);
+  --primary: var(--brand-500);
+  --primary-hover: var(--brand-600);
+  --secondary: var(--accent-500);
+  --tertiary: var(--highlight-500);
+  
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Space_Grotesk', system-ui, sans-serif;
+  --font-display: 'Quicksand', system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  
+  /* Standardized spaces */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --space-32: 128px;
 }
 
-/* Disabling dark mode to prevent flickering
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-*/
-
+/* Base Styles with Improved Typography */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-family: var(--font-sans);
   scroll-behavior: smooth;
+  line-height: 1.6;
+  font-feature-settings: "kern";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Scale - Improved hierarchy */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--neutral-900);
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-4);
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 2rem;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+h5 {
+  font-size: 1.125rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+p {
+  margin-bottom: var(--space-4);
 }
 
 /* Animation classes for background elements */
@@ -119,4 +214,166 @@ body {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
   transition: outline-offset 0.2s ease;
+}
+
+/* Texture Overlays */
+.texture-dots {
+  background-image: radial-gradient(var(--brand-200) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: 0 0;
+  opacity: 0.15;
+}
+
+.texture-grid {
+  background-image: 
+    linear-gradient(to right, var(--neutral-200) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--neutral-200) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.1;
+}
+
+.texture-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+}
+
+/* Logo-inspired decorative elements */
+.logo-circle::before {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--brand-500);
+  opacity: 0.1;
+  z-index: -1;
+}
+
+.logo-square::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  transform: rotate(45deg);
+  background: var(--accent-500);
+  opacity: 0.15;
+  z-index: -1;
+}
+
+/* Standardized Card Styles */
+.card-primary {
+  background: var(--neutral-50);
+  border: 1px solid var(--neutral-200);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-primary:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-secondary {
+  background: var(--neutral-50);
+  border: 1px solid var(--neutral-100);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.card-secondary:hover {
+  border-color: var(--brand-300);
+}
+
+/* Advanced Animations */
+@keyframes morph {
+  0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+}
+
+.animate-morph {
+  animation: morph 8s ease-in-out infinite;
+}
+
+@keyframes draw {
+  0% { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.animate-draw {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: draw 2s ease forwards;
+}
+
+/* Visual Hierarchy - Section styling */
+.section-primary {
+  position: relative;
+  padding: var(--space-16) 0;
+  z-index: 1;
+}
+
+.section-secondary {
+  position: relative;
+  padding: var(--space-12) 0;
+  background-color: var(--neutral-100);
+  z-index: 1;
+}
+
+.section-accent {
+  position: relative;
+  padding: var(--space-16) 0;
+  background: linear-gradient(135deg, var(--brand-50), var(--accent-50));
+  z-index: 1;
+}
+
+/* Consistent Icon System */
+.icon-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+}
+
+.icon-container-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: var(--brand-100);
+  color: var(--brand-600);
+}
+
+.icon-container-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: var(--accent-100);
+  color: var(--accent-600);
+}
+
+.icon-container-tertiary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: var(--highlight-100);
+  color: var(--highlight-600);
+}
+
+/* Mobile-specific styles to hide floating navigation */
+@media (max-width: 639px) {
+  .floating-navigation-container {
+    display: none !important;
+  }
 }
