@@ -102,3 +102,21 @@ body {
 .animate-pulse-slow {
   animation: pulse-slow 6s ease-in-out infinite;
 }
+
+/* Navigation indicator animations */
+@keyframes nav-indicator-pulse {
+  0% { opacity: 0.3; width: 20px; }
+  50% { opacity: 0.6; width: 40px; }
+  100% { opacity: 0.3; width: 20px; }
+}
+
+.animate-nav-indicator {
+  animation: nav-indicator-pulse 4s ease-in-out infinite;
+}
+
+/* Improved focus styles for accessibility */
+.focus-visible:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  transition: outline-offset 0.2s ease;
+}

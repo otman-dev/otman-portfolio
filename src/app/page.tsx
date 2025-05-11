@@ -12,7 +12,7 @@ export default function Home() {
   useEffect(() => {
     const handleScroll = () => {
       // Determine which section is active for nav highlighting
-      const sections = ['home', 'about', 'work', 'skills', 'certifications', 'experience', 'contact'];
+      const sections = ['home', 'about', 'work', 'experience', 'skills', 'certifications', 'contact'];
       let currentSection = '';
       
       // Set home as active when at the top
