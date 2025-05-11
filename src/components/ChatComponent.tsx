@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
   role: 'user' | 'assistant' | 'system';
@@ -72,51 +73,7 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
     }  }, [isOpen]);
-  // Format message content for display
-  const formatMessageContent = (content: string) => {
-    if (!content) return '';
-    
-    // Process bullet points (both - and * style)
-    let formattedContent = content
-      .replace(/^([\s]*)-\s(.*)/gm, '<li class="ml-5 list-disc">$2</li>')
-      .replace(/^([\s]*)\*\s(.*)/gm, '<li class="ml-5 list-disc">$2</li>');
-
-    // Add proper list tags
-    if (formattedContent.includes('<li')) {
-      const listItems = formattedContent.split(/(?=<li)|(?<=<\/li>)/);
-      let processedContent = '';
-      let inList = false;
-      
-      for (let i = 0; i < listItems.length; i++) {
-        const item = listItems[i];
-        if (item.startsWith('<li') && !inList) {
-          processedContent += '<ul class="my-1">';
-          inList = true;
-        }
-        
-        processedContent += item;
-        
-        if (item.endsWith('</li>') && inList && (i === listItems.length - 1 || !listItems[i+1].startsWith('<li'))) {
-          processedContent += '</ul>';
-          inList = false;
-        }
-      }
-      
-      formattedContent = processedContent;
-    }
-    
-    // Process line breaks and create paragraphs
-    formattedContent = formattedContent
-      .replace(/\n\n+/g, '</p><p class="my-2">') // Double line breaks become paragraphs
-      .replace(/\n/g, '<br />'); // Single line breaks become <br>
-    
-    // Wrap in paragraph if not already wrapped
-    if (!formattedContent.includes('<p') && !formattedContent.includes('<ul')) {
-      formattedContent = `<p>${formattedContent}</p>`;
-    }
-    
-    return formattedContent;
-  };
+    // Scroll to bottom functionality is handled above
 
   // Send message to API
   const handleSend = async () => {
@@ -267,38 +224,32 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
                     }`}
                     style={{ 
                       boxShadow: message.role === 'user' ? '0 2px 4px rgba(0, 0, 0, 0.05)' : '0 2px 8px rgba(0, 0, 0, 0.05)'
-                    }}
-                  >                    {message.role === 'assistant' ? (
+                    }}                  >                    {message.role === 'assistant' ? (
                       <div className="prose prose-sm max-w-none">
-                        {message.content.split('\n').map((line, i) => {
-                          // Check if line is a bullet point
-                          if (line.trim().startsWith('- ')) {
-                            return (
-                              <ul key={i} className="my-1 pl-1">
-                                <li className="ml-3 flex">
-                                  <span className="inline-block w-1.5 h-1.5 bg-brand-400 rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
-                                  <span>{line.trim().substring(2)}</span>
-                                </li>
-                              </ul>
-                            );
-                          } else if (line.trim().startsWith('* ')) {
-                            return (
-                              <ul key={i} className="my-1 pl-1">
-                                <li className="ml-3 flex">
-                                  <span className="inline-block w-1.5 h-1.5 bg-brand-400 rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
-                                  <span>{line.trim().substring(2)}</span>
-                                </li>
-                              </ul>
-                            );
-                          } else if (line.trim() === '') {
-                            return <div key={i} className="h-2"></div>; // Empty line spacing
-                          } else {
-                            return <p key={i} className="mb-1 leading-relaxed">{line}</p>;
-                          }
-                        })}
-                      </div>
-                    ) : (
-                      message.content
+                        <ReactMarkdown 
+                          components={{
+                            p: ({node, ...props}) => <p className="mb-1 leading-relaxed" {...props} />,
+                            strong: ({node, ...props}) => <span className="font-bold" {...props} />,
+                            ul: ({node, ...props}) => <ul className="my-1 ml-1" {...props} />,
+                            li: ({node, ...props}) => (
+                              <li className="ml-3 flex items-start">
+                                <span className="inline-block w-1.5 h-1.5 bg-brand-400 rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
+                                <span>{props.children}</span>
+                              </li>
+                            )
+                          }}
+                        >
+                          {message.content}
+                        </ReactMarkdown>
+                      </div>                    ) : (
+                      <ReactMarkdown
+                        components={{
+                          p: ({node, ...props}) => <p className="mb-1 leading-relaxed" {...props} />,
+                          strong: ({node, ...props}) => <span className="font-bold" {...props} />
+                        }}
+                      >
+                        {message.content}
+                      </ReactMarkdown>
                     )}
                   </div>
                 </div>
