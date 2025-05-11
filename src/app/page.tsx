@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import FloatingNavigation from "@/components/FloatingNavigation";
+import ChatComponent from "@/components/ChatComponent";
 import { 
   HeroSection,
   AboutSection,
@@ -117,9 +118,11 @@ export default function Home() {
       }
     };
   }, []);
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 text-gray-800 overflow-hidden">
+      {/* Chat Component */}
+      <ChatComponent />
+      
       {/* Background Design Elements */}
       <div className="fixed inset-0 -z-10 opacity-5">
         <div className="absolute top-20 left-1/4 w-40 h-40 rounded-full bg-blue-300 mix-blend-multiply filter blur-xl animate-float"></div>
