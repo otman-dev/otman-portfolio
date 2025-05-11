@@ -3,11 +3,11 @@
 import React from "react";
 
 const LanguagesSection: React.FC = () => {
-  return (
-    <section 
+  return (    <section 
       id="languages" 
       className="min-h-screen flex flex-col justify-center border-t border-gray-200 py-16 px-4 sm:px-6"
-      style={{minHeight: '100vh', paddingTop: '10vh', paddingBottom: '10vh'}}
+      style={{minHeight: '100vh', paddingTop: '10vh', paddingBottom: '10vh', scrollMarginTop: '5vh'}}
+      data-section="languages"
     >
       <div className="max-w-7xl mx-auto w-full flex flex-col items-center">
         <h2 className="text-2xl md:text-3xl font-semibold mb-8 md:mb-12 inline-block border-b-2 border-blue-500 pb-1 text-center">Languages & Extras</h2>

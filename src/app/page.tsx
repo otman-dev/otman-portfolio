@@ -30,13 +30,23 @@ export default function Home() {
       // Set a small timeout to debounce scroll events
       scrollTimeout = setTimeout(() => {
         // Determine which section is active for nav highlighting
-        const sections = ['home', 'about', 'work', 'experience', 'skills', 'certifications', 'contact'];
+        const sections = ['home', 'about', 'work', 'experience', 'skills', 'certifications', 'languages', 'statement', 'contact'];
         let currentSection = '';
         
         // Set home as active when at the top
         if (window.scrollY < 100) {
           currentSection = 'home';
           setActiveLink('home');
+          return;
+        }
+        
+        // Special case for detecting if we're near the bottom of the page
+        const scrollPosition = window.scrollY + window.innerHeight;
+        const pageHeight = document.documentElement.scrollHeight;
+        
+        // If we're at the bottom of the page, set contact as active
+        if (scrollPosition >= pageHeight - 100) {
+          setActiveLink('contact');
           return;
         }
         
@@ -60,14 +70,32 @@ export default function Home() {
               maxVisibleSection = section;
             }
             
-            // Alternative approach: If the element is near the top of the viewport
-            if (rect.top <= window.innerHeight * 0.3 && rect.bottom >= window.innerHeight * 0.3) {
+            // Improved section detection:
+            // Consider a section active if it's occupying a significant portion of the viewport
+            // or if the top of the section is within the top third of the viewport
+            if (
+              (rect.top <= window.innerHeight * 0.4 && rect.bottom >= window.innerHeight * 0.3) || 
+              (visibleHeight > window.innerHeight * 0.5)
+            ) {
               currentSection = section;
             }
           }
         }
         
-        // If we didn't find a section using the second approach, use the most visible one
+        // Check specifically for the languages section at its expected position
+        const languagesSection = document.getElementById('languages');
+        if (languagesSection) {
+          const rect = languagesSection.getBoundingClientRect();
+          // If the languages section is substantially in view
+          if (
+            (rect.top < window.innerHeight * 0.5 && rect.bottom > window.innerHeight * 0.3) || 
+            (rect.top >= 0 && rect.top < window.innerHeight * 0.4)
+          ) {
+            currentSection = 'languages';
+          }
+        }
+        
+        // If we didn't find a section using the approach above, use the most visible one
         if (!currentSection && maxVisibleSection) {
           currentSection = maxVisibleSection;
         }

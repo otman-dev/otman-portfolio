@@ -12,6 +12,8 @@ const navItems = [
   { id: 'experience', label: 'Experience', icon: <Icons.Award /> },
   { id: 'skills', label: 'Skills', icon: <Icons.Code /> },
   { id: 'certifications', label: 'Certs', icon: <Icons.Star /> },
+  { id: 'languages', label: 'Languages', icon: <Icons.Globe /> },
+  { id: 'statement', label: 'Statement', icon: <Icons.Info /> },
   { id: 'contact', label: 'Contact', icon: <Icons.Phone /> }
 ];
 
