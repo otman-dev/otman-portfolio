@@ -14,15 +14,20 @@ export async function POST(req: NextRequest) {
     // Initialize Groq client with API key
     const groq = new Groq({
       apiKey: process.env.GROQ_API_KEY,
-    });
-
-    // Create a context message with detailed portfolio information
+    });    // Create a context message with detailed portfolio information and formatting instructions
     const portfolioContext = `
-    Here is detailed information about Mouhibeddine Otman to help you answer questions accurately:
+    Here is detailed information about Mouhib Otman to help you answer questions accurately:
     ${JSON.stringify(portfolioData, null, 2)}
     
-    Use this information to provide accurate, helpful responses about Mouhibeddine Otman, his background, skills, projects, and work experience.
-    Always answer in a friendly, professional tone and keep responses concise.
+    RESPONSE FORMAT INSTRUCTIONS:
+    - Keep all responses extremely brief (1-3 sentences maximum)
+    - Use bullet points for any lists
+    - Be direct and get straight to the point
+    - Focus only on the most relevant information
+    - Avoid unnecessary details or elaboration
+    - Use a friendly but professional tone
+    - never respond with more than 3 sentences
+    - never respond out of the contxt of mouhib otman
     `;
 
     // Add the context as a system message at the beginning
@@ -31,13 +36,13 @@ export async function POST(req: NextRequest) {
       ...messages.filter(msg => msg.role !== 'system') // Filter out other system messages
     ];
     
-    // Call Groq API with enhanced context
+    // Call Groq API with enhanced context and parameters optimized for brevity
     const chatCompletion = await groq.chat.completions.create({
       messages: messagesWithContext,
       model: "llama3-8b-8192", // You can also use "mixtral-8x7b-32768" or other models
-      temperature: 0.7,
-      max_tokens: 1024,
-      top_p: 0.9,
+      temperature: 0.3,        // Lower temperature for more focused responses
+      max_tokens: 100,         // Limit token count for shorter responses
+      top_p: 0.7,              // More focused sampling
       stream: false,
     });
     

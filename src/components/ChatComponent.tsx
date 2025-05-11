@@ -12,10 +12,10 @@ const ChatComponent: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);  const [messages, setMessages] = useState<Message[]>([
     {
       role: 'system',
-      content: `You are an AI assistant for Mouhibeddine Otman, a professional with expertise in AI Research, IoT Systems, Full-Stack Development, and Data Engineering.
+      content: `You are an AI assistant for Mouhib Otman, a professional with expertise in AI Research, IoT Systems, Full-Stack Development, and Data Engineering.
 
-ABOUT MOUHIBEDDINE OTMAN:
-- Education: Computer Engineering, University of Carthage, 2020-2024
+ABOUT MOUHIB OTMAN:
+- Education: Computer Engineering, Private University of fes , 2020-2025
 - Current Role: AI & IoT Research Engineer
 - Key Skills: AI Research, IoT Systems, Full-Stack Development, Data Engineering
 - Languages: Python, JavaScript, TypeScript, C/C++, Java
@@ -31,7 +31,15 @@ ABOUT MOUHIBEDDINE OTMAN:
 - Research Interests: Edge AI, Computer Vision, Human-Computer Interaction
 - Contact: contact@otmanmouhib.com
 
-Your task is to assist visitors on Mouhibeddine's portfolio website by answering questions about his background, skills, projects, and expertise. Be friendly, professional, and concise in your answers. If asked about something not related to Mouhibeddine or his professional work, politely redirect the conversation to relevant topics.`
+RESPONSE STYLE GUIDELINES:
+- Keep all responses extremely brief (1-3 sentences max)
+- Be direct and get straight to the point
+- Use bullet points for lists instead of paragraphs
+- Focus only on the most relevant information
+- Use a friendly, professional tone
+- If asked about something not related to Otman's work, politely redirect with a brief response
+
+Your task is to assist visitors on Mouhib's portfolio website by providing short, effective answers about his background, skills, projects, and expertise.`
     },
     {
       role: 'assistant',
@@ -63,8 +71,53 @@ Your task is to assist visitors on Mouhibeddine's portfolio website by answering
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
+    }  }, [isOpen]);
+  // Format message content for display
+  const formatMessageContent = (content: string) => {
+    if (!content) return '';
+    
+    // Process bullet points (both - and * style)
+    let formattedContent = content
+      .replace(/^([\s]*)-\s(.*)/gm, '<li class="ml-5 list-disc">$2</li>')
+      .replace(/^([\s]*)\*\s(.*)/gm, '<li class="ml-5 list-disc">$2</li>');
+
+    // Add proper list tags
+    if (formattedContent.includes('<li')) {
+      const listItems = formattedContent.split(/(?=<li)|(?<=<\/li>)/);
+      let processedContent = '';
+      let inList = false;
+      
+      for (let i = 0; i < listItems.length; i++) {
+        const item = listItems[i];
+        if (item.startsWith('<li') && !inList) {
+          processedContent += '<ul class="my-1">';
+          inList = true;
+        }
+        
+        processedContent += item;
+        
+        if (item.endsWith('</li>') && inList && (i === listItems.length - 1 || !listItems[i+1].startsWith('<li'))) {
+          processedContent += '</ul>';
+          inList = false;
+        }
+      }
+      
+      formattedContent = processedContent;
     }
-  }, [isOpen]);
+    
+    // Process line breaks and create paragraphs
+    formattedContent = formattedContent
+      .replace(/\n\n+/g, '</p><p class="my-2">') // Double line breaks become paragraphs
+      .replace(/\n/g, '<br />'); // Single line breaks become <br>
+    
+    // Wrap in paragraph if not already wrapped
+    if (!formattedContent.includes('<p') && !formattedContent.includes('<ul')) {
+      formattedContent = `<p>${formattedContent}</p>`;
+    }
+    
+    return formattedContent;
+  };
+
   // Send message to API
   const handleSend = async () => {
     const currentInput = input.trim();
@@ -177,14 +230,13 @@ Your task is to assist visitors on Mouhibeddine's portfolio website by answering
                   <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
               </button>
-            </div>
-              {/* Chat messages */}
-            <div className="flex-1 p-5 overflow-y-auto bg-gray-50">
+            </div>              {/* Chat messages */}
+            <div className="flex-1 px-5 py-4 overflow-y-auto bg-gray-50">
               {/* FAQ suggestion buttons - show only when first opened and no user messages */}
               {messages.filter(m => m.role === 'user').length === 0 && (
                 <div className="mb-6">
-                  <div className="text-sm text-gray-500 mb-2">Common questions:</div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="text-sm font-medium text-gray-600 mb-2.5">Common questions:</div>
+                  <div className="flex flex-wrap gap-2.5">
                     {[
                       "Tell me about Otman's background",
                       "What projects has Otman worked on?",
@@ -197,7 +249,7 @@ Your task is to assist visitors on Mouhibeddine's portfolio website by answering
                           setInput(faq);
                           setTimeout(() => handleSend(), 100);
                         }}
-                        className="px-3 py-1.5 bg-white text-sm text-brand-600 border border-brand-200 rounded-full hover:bg-brand-50 transition-colors"
+                        className="px-3.5 py-2 bg-white text-sm text-brand-600 border border-brand-200 rounded-full hover:bg-brand-50 hover:border-brand-300 transition-colors shadow-sm"
                       >
                         {faq}
                       </button>
@@ -206,8 +258,7 @@ Your task is to assist visitors on Mouhibeddine's portfolio website by answering
                 </div>
               )}
               
-              {messages.filter(m => m.role !== 'system').map((message, index) => (
-                <div key={index} className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
+              {messages.filter(m => m.role !== 'system').map((message, index) => (                <div key={index} className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
                   <div 
                     className={`inline-block p-3 rounded-2xl max-w-[80%] ${
                       message.role === 'user' 
@@ -217,12 +268,41 @@ Your task is to assist visitors on Mouhibeddine's portfolio website by answering
                     style={{ 
                       boxShadow: message.role === 'user' ? '0 2px 4px rgba(0, 0, 0, 0.05)' : '0 2px 8px rgba(0, 0, 0, 0.05)'
                     }}
-                  >
-                    {message.content}
+                  >                    {message.role === 'assistant' ? (
+                      <div className="prose prose-sm max-w-none">
+                        {message.content.split('\n').map((line, i) => {
+                          // Check if line is a bullet point
+                          if (line.trim().startsWith('- ')) {
+                            return (
+                              <ul key={i} className="my-1 pl-1">
+                                <li className="ml-3 flex">
+                                  <span className="inline-block w-1.5 h-1.5 bg-brand-400 rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
+                                  <span>{line.trim().substring(2)}</span>
+                                </li>
+                              </ul>
+                            );
+                          } else if (line.trim().startsWith('* ')) {
+                            return (
+                              <ul key={i} className="my-1 pl-1">
+                                <li className="ml-3 flex">
+                                  <span className="inline-block w-1.5 h-1.5 bg-brand-400 rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
+                                  <span>{line.trim().substring(2)}</span>
+                                </li>
+                              </ul>
+                            );
+                          } else if (line.trim() === '') {
+                            return <div key={i} className="h-2"></div>; // Empty line spacing
+                          } else {
+                            return <p key={i} className="mb-1 leading-relaxed">{line}</p>;
+                          }
+                        })}
+                      </div>
+                    ) : (
+                      message.content
+                    )}
                   </div>
                 </div>
-              ))}
-              {isLoading && (
+              ))}              {isLoading && (
                 <div className="mb-4 text-left">
                   <div className="inline-block p-3 rounded-2xl bg-white text-gray-500 max-w-[80%] border border-gray-100 shadow-sm">
                     <div className="flex items-center space-x-2">
@@ -231,6 +311,18 @@ Your task is to assist visitors on Mouhibeddine's portfolio website by answering
                       <div className="h-2 w-2 bg-brand-500 rounded-full animate-pulse delay-150"></div>
                     </div>
                   </div>
+                </div>
+              )}
+                {/* Character limit indicator - shows for assistant messages */}
+              {messages.filter(m => m.role === 'assistant').length > 0 && (
+                <div className="text-right mt-1 mb-3">
+                  <span className="text-xs text-gray-400 flex items-center justify-end gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    {messages.filter(m => m.role === 'assistant').slice(-1)[0].content.length} characters
+                  </span>
                 </div>
               )}
               <div ref={messagesEndRef} />

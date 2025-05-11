@@ -1,25 +1,25 @@
 export const portfolioData = {
   personal: {
-    name: "Mouhibeddine Otman",
+    name: "Mouhib Otman",
     title: "AI Researcher & Full-Stack Developer",
     email: "contact@otmanmouhib.com",
     linkedin: "https://www.linkedin.com/in/otmanmouhib",
     github: "https://github.com/otmanmouhib",
-    bio: "Mouhibeddine Otman is a Computer Engineer with a strong focus on AI Research, IoT Systems, and Full-Stack Development. His passion lies at the intersection of artificial intelligence and practical applications, developing solutions that bridge the gap between theoretical research and real-world implementation. With expertise spanning from embedded systems to cloud deployment, Otman specializes in creating integrated technological ecosystems that leverage cutting-edge AI techniques."
+    bio: "Mouhib Otman is a Computer Engineer with a strong focus on AI Research, IoT Systems, and Full-Stack Development. His passion lies at the intersection of artificial intelligence and practical applications, developing solutions that bridge the gap between theoretical research and real-world implementation. With expertise spanning from embedded systems to cloud deployment, Otman specializes in creating integrated technological ecosystems that leverage cutting-edge AI techniques."
   },
   education: [
     {
       degree: "Bachelor's Degree in Computer Engineering",
-      institution: "University of Carthage",
-      year: "2020-2024",
+      institution: "Private University of Fes",
+      year: "2020-2025",
       description: "Specialized in Artificial Intelligence and IoT systems with emphasis on computer vision and machine learning applications. Graduated with honors and completed a thesis on edge computing for IoT devices."
     }
   ],
   experience: [
     {
       role: "AI & IoT Research Engineer",
-      company: "Tech Innovations Lab",
-      period: "2024-Present",
+      company: "LS2N Research Lab at Nantes",
+      period: "2025-Present",
       description: "Leading research initiatives focused on integrating AI capabilities with IoT devices. Developing predictive maintenance algorithms and implementing edge computing solutions for real-time data processing and analysis.",
       technologies: ["TensorFlow", "PyTorch", "Edge Computing", "Python", "C++"]
     },
