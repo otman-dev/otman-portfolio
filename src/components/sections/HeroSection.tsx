@@ -357,34 +357,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ setActiveLink }) => {
               height={64}
               className="opacity-20"
             />
-          </motion.div>
-        </motion.div>
+          </motion.div>        </motion.div>
       </div>
-      
-      {/* Modern scrolling indicator with animation */}
-      <motion.div 
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 0.8 }}
-      >
-        <motion.span 
-          className="text-sm text-gray-500 mb-2"
-          animate={{ y: [0, 5, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          Scroll to explore
-        </motion.span>
-        <motion.div
-          className="w-6 h-10 border-2 border-blue-500 rounded-full flex items-start justify-center p-1"
-        >
-          <motion.div 
-            className="w-1.5 h-1.5 bg-blue-500 rounded-full"
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
-          />
-        </motion.div>
-      </motion.div>
     </section>
   );
 };
