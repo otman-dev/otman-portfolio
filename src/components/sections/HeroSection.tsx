@@ -43,8 +43,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ setActiveLink }) => {
     setMouseX(mouseXPercent * 2 - 1); // -1 to 1
     setMouseY(mouseYPercent * 2 - 1); // -1 to 1
   };
-  
-  // Animated gradient background position
+    // Animated gradient background position
   const [gradientPosition, setGradientPosition] = useState({ x: 0, y: 0 });
   
   useEffect(() => {
@@ -56,15 +55,29 @@ const HeroSection: React.FC<HeroSectionProps> = ({ setActiveLink }) => {
     };
     moveGradient();
   }, [mouseX, mouseY]);
-
+  // Define meteor type
+  interface Meteor {
+    id: number;
+    top: number;
+    left: number;
+    duration: number;
+    delay: number;
+  }
+  
   // Create meteor effect elements
-  const meteors = Array.from({ length: 8 }).map((_, i) => ({
-    id: i,
-    top: Math.random() * 100,
-    left: Math.random() * 100,
-    duration: Math.random() * 3 + 2,
-    delay: Math.random() * 5
-  }));
+  const [meteors, setMeteors] = useState<Meteor[]>([]);
+  
+  // Generate meteors only on the client side to avoid hydration mismatch
+  useEffect(() => {
+    const generatedMeteors = Array.from({ length: 8 }).map((_, i) => ({
+      id: i,
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      duration: Math.random() * 3 + 2,
+      delay: Math.random() * 5
+    }));
+    setMeteors(generatedMeteors);
+  }, []);
   
   return (
     <section 

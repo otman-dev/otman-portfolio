@@ -2,121 +2,166 @@
 
 import Image from "next/image";
 import { FadeIn, SlideIn, ScaleIn } from "@/components/animations";
-import { motion } from "framer-motion";
-import React from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import React, { useRef } from "react";
+import { FiCpu, FiCloud, FiLayers, FiDatabase } from "react-icons/fi";
+
+// Define core skills with icons
+const coreSkills = [
+  { name: "AI Research", icon: <FiCpu className="text-blue-600" size={24} />, color: "bg-blue-50" },
+  { name: "IoT Systems", icon: <FiCloud className="text-indigo-600" size={24} />, color: "bg-indigo-50" },
+  { name: "Full-Stack", icon: <FiLayers className="text-purple-600" size={24} />, color: "bg-purple-50" },
+  { name: "Data Engineering", icon: <FiDatabase className="text-cyan-600" size={24} />, color: "bg-cyan-50" }
+];
 
 const AboutSection: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Subtle parallax effect on scroll
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const imageY = useTransform(scrollYProgress, [0, 1], [50, -50]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [100, -100]);
+  
   return (
     <section 
       id="about" 
-      className="min-h-screen flex flex-col justify-center border-t border-gray-200 py-16 sm:py-20 px-4 sm:px-6"
+      ref={containerRef}
+      className="min-h-screen flex flex-col justify-center relative border-t border-gray-200 py-16 sm:py-20 px-4 sm:px-6 overflow-hidden"
       style={{minHeight: '100vh', paddingTop: 'calc(10vh + 20px)', paddingBottom: '10vh'}}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center max-w-7xl mx-auto w-full">
-        <FadeIn className="lg:col-span-5 flex flex-col items-center lg:items-start space-y-6" delay={0.2}>
-          <ScaleIn delay={0.3}>
-            <div className="relative w-52 h-52 sm:w-64 sm:h-64 md:w-72 md:h-72">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-indigo-600/20 rounded-full blur-2xl transform -rotate-6 scale-105"></div>
-              <div className="relative w-full h-full rounded-full border-8 border-white shadow-xl overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute top-1/3 -left-24 w-64 h-64 rounded-full bg-blue-100/50 mix-blend-multiply filter blur-3xl opacity-70"></div>
+          <div className="absolute top-2/3 -right-24 w-64 h-64 rounded-full bg-indigo-100/50 mix-blend-multiply filter blur-3xl opacity-70"></div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto w-full">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold inline-block">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+              About Me
+            </span>
+          </h2>
+          <div className="h-1 w-24 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto mt-4"></div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          {/* Left column - Photo with modern frame */}
+          <motion.div 
+            className="lg:col-span-5 flex justify-center"
+            style={{ y: imageY }}
+          >
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-full blur-xl"></div>
+              <div className="group relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-xl">
                 <Image
                   src="/profile_photo.jpg"
                   alt="Otman Mouhib"
                   fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 208px, (max-width: 1024px) 256px, 288px"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  sizes="(max-width: 768px) 256px, 320px"
                   priority
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute bottom-8 left-0 right-0 text-center text-white">
+                    <p className="font-bold text-xl">Otman Mouhib</p>
+                    <p className="text-blue-200">Computer Engineer</p>
+                  </div>
+                </div>
               </div>
             </div>
-          </ScaleIn>
+          </motion.div>
           
-          <SlideIn className="text-center lg:text-left w-full max-w-md" delay={0.4}>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Otman Mouhib</h3>
-            <p className="text-blue-700 font-medium mb-3">Computer Engineer · AI & Embedded Systems</p>
-            
-            <div className="flex flex-wrap justify-center lg:justify-start gap-2 sm:gap-3 mt-4">
-              <motion.span 
-                className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm font-medium"
-                whileHover={{ scale: 1.05, backgroundColor: "#dbeafe" }}
-                whileTap={{ scale: 0.95 }}
-              >
-                AI Research
-              </motion.span>
-              <motion.span 
-                className="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-sm font-medium"
-                whileHover={{ scale: 1.05, backgroundColor: "#e0e7ff" }}
-                whileTap={{ scale: 0.95 }}
-              >
-                IoT Systems
-              </motion.span>
-              <motion.span 
-                className="px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm font-medium"
-                whileHover={{ scale: 1.05, backgroundColor: "#f3e8ff" }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Full-Stack
-              </motion.span>
-              <motion.span 
-                className="px-3 py-1 bg-cyan-50 text-cyan-700 rounded-full text-sm font-medium"
-                whileHover={{ scale: 1.05, backgroundColor: "#ecfeff" }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Data Engineering
-              </motion.span>
+          {/* Right column - Content with skills */}
+          <motion.div 
+            className="lg:col-span-7 space-y-8"
+            style={{ y: contentY }}
+          >
+            {/* Core skills with icons */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {coreSkills.map((skill, index) => (
+                <motion.div
+                  key={index}
+                  className={`${skill.color} p-4 rounded-xl flex flex-col items-center text-center shadow-sm`}
+                  whileHover={{ 
+                    y: -5, 
+                    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+                  }}
+                >
+                  <div className="mb-2">
+                    {skill.icon}
+                  </div>
+                  <p className="font-medium text-gray-800">{skill.name}</p>
+                </motion.div>
+              ))}
             </div>
-          </SlideIn>
-        </FadeIn>
-        
-        <SlideIn className="lg:col-span-7 space-y-6" delay={0.4} direction="left">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 inline-block pb-2 border-b-2 border-blue-500">
-            About Me
-          </h2>
-          
-          <div className="space-y-4 text-gray-700">
-            <FadeIn delay={0.5}>
-              <p className="leading-relaxed text-lg">
-                I&apos;m a polyvalent engineer with a foundation in AI research, IoT systems, full-stack development, and data engineering. My passion lies in building innovative solutions that bridge the gap between hardware and software.
-              </p>
-            </FadeIn>
             
-            <FadeIn delay={0.6}>
-              <p className="leading-relaxed text-lg">
-                With expertise spanning from embedded systems to cloud architecture, I enjoy tackling complex challenges that require both technical depth and creative problem-solving. I believe in building systems that are not just functional, but also scalable, maintainable, and user-focused.
-              </p>
-            </FadeIn>
+            {/* About me content in cards */}
+            <div className="space-y-4">
+              <SlideIn direction="left" delay={0.3}>
+                <motion.div
+                  className="bg-white/80 backdrop-blur-sm rounded-xl p-5 border border-gray-100 shadow-md"
+                  whileHover={{ y: -5 }}
+                >
+                  <p className="text-lg text-gray-700">
+                    I'm an engineer with a passion for bridging hardware and software through <span className="text-blue-600 font-medium">innovative solutions</span>. My specialty lies in developing intelligent systems that solve real-world problems.
+                  </p>
+                </motion.div>
+              </SlideIn>
+              
+              <SlideIn direction="left" delay={0.4}>
+                <motion.div
+                  className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-100 shadow-md"
+                  whileHover={{ y: -5 }}
+                >
+                  <p className="text-lg text-gray-700">
+                    My approach combines <span className="text-indigo-600 font-medium">analytical thinking</span> with hands-on implementation, creating solutions that are scalable, maintainable, and focused on user needs.
+                  </p>
+                </motion.div>
+              </SlideIn>
+            </div>
             
-            <FadeIn delay={0.7}>
-              <p className="leading-relaxed text-lg">
-                My approach combines analytical thinking with a hands-on implementation style, allowing me to move seamlessly between conceptual design and practical development. I thrive in environments that encourage continuous learning and innovation.
-              </p>
-            </FadeIn>
-          </div>
-          
-          <FadeIn delay={0.8}>
+            {/* Call to action buttons */}
             <div className="pt-4 flex flex-col sm:flex-row gap-4">
               <motion.a 
                 href="#contact" 
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-center text-white px-6 py-3 rounded-lg transition-all"
-                whileHover={{ scale: 1.05, boxShadow: "0 10px 15px -3px rgba(59, 130, 246, 0.3)" }}
-                whileTap={{ scale: 0.95 }}
+                className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-center text-white font-medium px-6 py-3 rounded-lg transition-all"
+                whileHover={{ 
+                  scale: 1.03,
+                  boxShadow: "0 10px 15px -3px rgba(59, 130, 246, 0.3)"
+                }}
+                whileTap={{ scale: 0.97 }}
               >
-                Get in Touch
+                <div className="absolute inset-0 flex">
+                  <span className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full hover:animate-shimmer"></span>
+                </div>
+                <span className="relative z-10">Get in Touch</span>
               </motion.a>
+              
               <motion.a 
                 href="/CV_OtmanMouhib.pdf" 
                 download 
-                className="bg-white border-2 border-gray-300 text-center px-6 py-3 rounded-lg transition-all flex items-center justify-center gap-2"
-                whileHover={{ scale: 1.05, borderColor: "#3b82f6" }}
-                whileTap={{ scale: 0.95 }}
+                className="group bg-white border-2 border-gray-200 hover:border-blue-400 text-center px-6 py-3 rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm"
+                whileHover={{ 
+                  scale: 1.03, 
+                  boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1)"
+                }}
+                whileTap={{ scale: 0.97 }}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600 group-hover:text-blue-700 transition-colors" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>
-                Download CV
+                <span className="text-gray-800 group-hover:text-blue-700 font-medium transition-colors">Download CV</span>
               </motion.a>
             </div>
-          </FadeIn>
-        </SlideIn>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
