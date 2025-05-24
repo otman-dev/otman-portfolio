@@ -12,8 +12,8 @@ const ContactFooterSection: React.FC = () => {
       icon: <Icons.Mail className="w-6 h-6" />,
       title: "Email",
       subtitle: "Drop me a line",
-      value: "contact@otmanmouhib.com",
-      href: "mailto:contact@otmanmouhib.com",
+      value: "mouhib.otm@gmail.com",
+      href: "mailto:mouhib.otm@gmail.com",
       color: "blue",
       gradient: "from-blue-500 to-cyan-500"
     },
@@ -158,7 +158,7 @@ const ContactFooterSection: React.FC = () => {
             </p>
             <motion.button
               onClick={() => {
-                window.location.href = 'mailto:contact@otmanmouhib.com?subject=Let\'s Work Together';
+                window.location.href = 'mailto:mouhib.otm@gmail.com?subject=Let\'s Work Together';
               }}
               className="group px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/25"
               whileHover={{ scale: 1.05 }}

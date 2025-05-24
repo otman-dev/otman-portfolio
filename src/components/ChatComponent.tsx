@@ -30,7 +30,7 @@ ABOUT MOUHIB OTMAN:
 - Work Experience: Research Assistant at IoT Lab (2022-2023), Software Engineering Intern at Tech Solutions (2023)
 - Certifications: AWS Certified Developer, TensorFlow Developer Certificate, Google Cloud Professional
 - Research Interests: Edge AI, Computer Vision, Human-Computer Interaction
-- Contact: contact@otmanmouhib.com
+- Contact: mouhib.otm@gmail.com
 
 RESPONSE STYLE GUIDELINES:
 - Keep all responses extremely brief (1-3 sentences max)
