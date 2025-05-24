@@ -1,15 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { portfolioData } from "@/utils/portfolioKnowledgeBase";
+import { experiencesData } from "@/utils/data/experiences";
 
 const ExperienceSection: React.FC = () => {
   const [showAll, setShowAll] = useState(false);
-  
-  // Get experiences to display based on showAll state
+    // Get experiences to display based on showAll state
   const displayExperiences = showAll 
-    ? portfolioData.experiences 
-    : portfolioData.experiences.slice(0, 6);
+    ? experiencesData 
+    : experiencesData.slice(0, 6);
 
   return (
     <section 
@@ -69,9 +68,8 @@ const ExperienceSection: React.FC = () => {
               </div>
             </div>
           ))}
-        </div>
-          {/* Show more/less button */}
-        {portfolioData.experiences.length > 6 && (
+        </div>          {/* Show more/less button */}
+        {experiencesData.length > 6 && (
           <div className="mt-8">
             <button 
               onClick={() => setShowAll(!showAll)}
@@ -79,7 +77,7 @@ const ExperienceSection: React.FC = () => {
             >
               {showAll 
                 ? `Show Less` 
-                : `View All ${portfolioData.experiences.length} Experiences`
+                : `View All ${experiencesData.length} Experiences`
               }
             </button>
           </div>

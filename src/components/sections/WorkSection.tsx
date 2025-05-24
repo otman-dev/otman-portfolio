@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { portfolioData } from "@/utils/portfolioKnowledgeBase";
+import { projectsData } from "@/utils/data/projects";
+import { uiData } from "@/utils/data/ui";
 
 const WorkSection: React.FC = () => {
   const getColorClasses = (color: string) => {
@@ -20,10 +21,10 @@ const WorkSection: React.FC = () => {
       style={{minHeight: '100vh', paddingTop: '10vh', paddingBottom: '10vh'}}
     >
       <div className="max-w-7xl mx-auto w-full flex flex-col items-center">
-        <h2 className="text-2xl md:text-3xl font-semibold mb-8 md:mb-12 inline-block border-b-2 border-blue-500 pb-1 text-center">{portfolioData.ui.work.heading}</h2>
+        <h2 className="text-2xl md:text-3xl font-semibold mb-8 md:mb-12 inline-block border-b-2 border-blue-500 pb-1 text-center">{uiData.work.heading}</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full max-w-6xl mx-auto">
-          {portfolioData.ui.work.categories.map((category, index) => {
+          {uiData.work.categories.map((category, index) => {
             const colors = getColorClasses(category.color);
             return (
               <div key={index} className={`bg-gradient-to-br ${colors.bg} p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1`}>

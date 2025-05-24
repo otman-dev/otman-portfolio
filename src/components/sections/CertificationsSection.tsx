@@ -1,15 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { portfolioData } from "@/utils/portfolioKnowledgeBase";
+import { certificationsData } from "@/utils/data/certifications";
 
 const CertificationsSection: React.FC = () => {
   const [showAll, setShowAll] = useState(false);
-  
-  // Get certifications to display based on showAll state
+    // Get certifications to display based on showAll state
   const displayCertifications = showAll 
-    ? portfolioData.certifications 
-    : portfolioData.certifications.slice(0, 8);
+    ? certificationsData
+    : certificationsData.slice(0, 8);
 
   // Function to get icon based on issuer
   const getIconForIssuer = (issuer: string) => {
@@ -100,9 +99,8 @@ const CertificationsSection: React.FC = () => {
             </div>
           ))}
         </div>
-        
-        {/* Show more/less button */}
-        {portfolioData.certifications.length > 8 && (
+          {/* Show more/less button */}
+        {certificationsData.length > 8 && (
           <div className="mt-8">
             <button 
               onClick={() => setShowAll(!showAll)}
@@ -110,7 +108,7 @@ const CertificationsSection: React.FC = () => {
             >
               {showAll 
                 ? `Show Less` 
-                : `View All ${portfolioData.certifications.length} Certifications`
+                : `View All ${certificationsData.length} Certifications`
               }
             </button>
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { skillsData } from "@/utils/data/skills";
 
 const SkillsSection: React.FC = () => {
   return (
@@ -21,28 +22,13 @@ const SkillsSection: React.FC = () => {
                 </svg>
               </span>
               <span className="text-lg">Languages</span>
-            </h3>
-            <ul className="text-gray-700 space-y-3 pl-4 mt-4 flex flex-col items-center md:items-start">
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-blue-500 rounded-full mr-3"></span>
-                Python
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-blue-500 rounded-full mr-3"></span>
-                JavaScript/TypeScript
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-blue-500 rounded-full mr-3"></span>
-                C/C++
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-blue-500 rounded-full mr-3"></span>
-                SQL
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-blue-500 rounded-full mr-3"></span>
-                Java
-              </li>
+            </h3>            <ul className="text-gray-700 space-y-3 pl-4 mt-4 flex flex-col items-center md:items-start">
+              {skillsData.programming.map((lang, index) => (
+                <li key={index} className="flex items-center">
+                  <span className="w-2.5 h-2.5 bg-blue-500 rounded-full mr-3"></span>
+                  {lang}
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -55,28 +41,13 @@ const SkillsSection: React.FC = () => {
                 </svg>
               </span>
               <span className="text-lg">Web Development</span>
-            </h3>
-            <ul className="text-gray-700 space-y-3 pl-4 mt-4 flex flex-col items-center md:items-start">
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-purple-500 rounded-full mr-3"></span>
-                React, Next.js
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-purple-500 rounded-full mr-3"></span>
-                Node.js, Express
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-purple-500 rounded-full mr-3"></span>
-                RESTful APIs, GraphQL
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-purple-500 rounded-full mr-3"></span>
-                HTML5, CSS3, Tailwind
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-purple-500 rounded-full mr-3"></span>
-                UI/UX Design
-              </li>
+            </h3>            <ul className="text-gray-700 space-y-3 pl-4 mt-4 flex flex-col items-center md:items-start">
+              {skillsData.frameworks.map((framework, index) => (
+                <li key={index} className="flex items-center">
+                  <span className="w-2.5 h-2.5 bg-purple-500 rounded-full mr-3"></span>
+                  {framework}
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -91,28 +62,19 @@ const SkillsSection: React.FC = () => {
                 </svg>
               </span>
               <span className="text-lg">Data Engineering</span>
-            </h3>
-            <ul className="text-gray-700 space-y-3 pl-4 mt-4 flex flex-col items-center md:items-start">
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-green-500 rounded-full mr-3"></span>
-                PostgreSQL, MongoDB
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-green-500 rounded-full mr-3"></span>
-                ETL Pipelines
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-green-500 rounded-full mr-3"></span>
-                Data Warehousing
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-green-500 rounded-full mr-3"></span>
-                Big Data (Spark, Hadoop)
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-green-500 rounded-full mr-3"></span>
-                Data Visualization
-              </li>
+            </h3>            <ul className="text-gray-700 space-y-3 pl-4 mt-4 flex flex-col items-center md:items-start">
+              {skillsData.databases.map((db, index) => (
+                <li key={index} className="flex items-center">
+                  <span className="w-2.5 h-2.5 bg-green-500 rounded-full mr-3"></span>
+                  {db}
+                </li>
+              ))}
+              {skillsData.tools.slice(0, 3).map((tool, index) => (
+                <li key={`tool-${index}`} className="flex items-center">
+                  <span className="w-2.5 h-2.5 bg-green-500 rounded-full mr-3"></span>
+                  {tool}
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -159,28 +121,32 @@ const SkillsSection: React.FC = () => {
                 </svg>
               </span>
               <span className="text-lg">Machine Learning</span>
+            </h3>            <ul className="text-gray-700 space-y-3 pl-4 mt-4 flex flex-col items-center md:items-start">
+              {skillsData.aiMl.map((skill, index) => (
+                <li key={index} className="flex items-center">
+                  <span className="w-2.5 h-2.5 bg-indigo-500 rounded-full mr-3"></span>
+                  {skill}
+                </li>
+              ))}
+            </ul>          </div>
+
+          {/* IoT & Embedded */}
+          <div className="bg-gradient-to-br from-white to-red-50 p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+            <h3 className="font-semibold mb-4 text-gray-800 flex items-center justify-center md:justify-start">
+              <span className="bg-red-100 text-red-600 p-3 rounded-lg mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                </svg>
+              </span>
+              <span className="text-lg">IoT & Embedded</span>
             </h3>
             <ul className="text-gray-700 space-y-3 pl-4 mt-4 flex flex-col items-center md:items-start">
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-indigo-500 rounded-full mr-3"></span>
-                TensorFlow, PyTorch
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-indigo-500 rounded-full mr-3"></span>
-                Computer Vision
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-indigo-500 rounded-full mr-3"></span>
-                NLP
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-indigo-500 rounded-full mr-3"></span>
-                Time Series Analysis
-              </li>
-              <li className="flex items-center">
-                <span className="w-2.5 h-2.5 bg-indigo-500 rounded-full mr-3"></span>
-                MLOps
-              </li>
+              {skillsData.embedded.map((tech, index) => (
+                <li key={index} className="flex items-center">
+                  <span className="w-2.5 h-2.5 bg-red-500 rounded-full mr-3"></span>
+                  {tech}
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -193,28 +159,19 @@ const SkillsSection: React.FC = () => {
                 </svg>
               </span>
               Tools & Platforms
-            </h3>
-            <ul className="text-gray-700 space-y-2 pl-3">
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
-                Git, GitHub Actions
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
-                Docker, Kubernetes
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
-                AWS, Azure, GCP
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
-                Linux, Bash
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
-                CI/CD
-              </li>
+            </h3>            <ul className="text-gray-700 space-y-2 pl-3">
+              {skillsData.tools.map((tool, index) => (
+                <li key={index} className="flex items-center">
+                  <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
+                  {tool}
+                </li>
+              ))}
+              {skillsData.cloud.map((cloud, index) => (
+                <li key={`cloud-${index}`} className="flex items-center">
+                  <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
+                  {cloud}
+                </li>
+              ))}
             </ul>
           </div>
         </div>

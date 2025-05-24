@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Groq } from 'groq-sdk';
-import { portfolioData } from '@/utils/portfolioKnowledgeBase';
+import { personalData } from '@/utils/data/personal';
+import { experiencesData } from '@/utils/data/experiences';
+import { skillsData } from '@/utils/data/skills';
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,21 +26,19 @@ export async function POST(req: NextRequest) {
     // Initialize Groq client with API key
     const groq = new Groq({
       apiKey: process.env.GROQ_API_KEY,
-    });
-
-    // Create a structured context message using the portfolio data
+    });    // Create a structured context message using the portfolio data
     const portfolioContext = `
-    You are an AI assistant helping visitors learn about ${portfolioData.personal.name}'s portfolio.
+    You are an AI assistant helping visitors learn about ${personalData.name}'s portfolio.
     
     PERSONAL INFO:
-    - Name: ${portfolioData.personal.name}
-    - Title: ${portfolioData.personal.title}
+    - Name: ${personalData.name}
+    - Title: ${personalData.title}
     - Location: Morocco/France
-    - Bio: ${portfolioData.personal.bio}
+    - Bio: ${personalData.bio}
     
-    EXPERIENCE SUMMARY: ${portfolioData.experiences.length} positions
+    EXPERIENCE SUMMARY: ${experiencesData.length} positions
     Recent roles include:
-    ${portfolioData.experiences.slice(0, 3).map(exp => `- ${exp.title} at ${exp.company} (${exp.duration})`).join('\n')}
+    ${experiencesData.slice(0, 3).map((exp: any) => `- ${exp.title} at ${exp.company} (${exp.duration})`).join('\n')}
     
     KEY ACHIEVEMENTS:
     - National Robotics Champion (2021)
@@ -47,16 +47,16 @@ export async function POST(req: NextRequest) {
     - Multiple successful AI and IoT deployments
     
     TECHNICAL EXPERTISE:
-    - AI/ML: ${portfolioData.skills.aiMl.slice(0, 5).join(', ')}
-    - Programming: ${portfolioData.skills.programming.slice(0, 5).join(', ')}
-    - Embedded: ${portfolioData.skills.embedded.slice(0, 5).join(', ')}
-    - Specializations: ${portfolioData.skills.specializations.join(', ')}
+    - AI/ML: ${skillsData.aiMl.slice(0, 5).join(', ')}
+    - Programming: ${skillsData.programming.slice(0, 5).join(', ')}
+    - Embedded: ${skillsData.embedded.slice(0, 5).join(', ')}
+    - Specializations: ${skillsData.specializations.join(', ')}
     
     RESPONSE GUIDELINES:
     - Keep responses brief (1-3 sentences) unless details are requested
     - Use bullet points for lists
     - Be professional and friendly
-    - Only discuss ${portfolioData.personal.name}'s portfolio content
+    - Only discuss ${personalData.name}'s portfolio content
     - Provide titles and brief descriptions, let users ask for more details
     `;
 

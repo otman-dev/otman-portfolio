@@ -5,7 +5,8 @@ import { FadeIn, SlideIn, ScaleIn } from "@/components/animations";
 import { motion, useScroll, useTransform } from "framer-motion";
 import React, { useRef } from "react";
 import { FiCpu, FiCloud, FiLayers, FiDatabase } from "react-icons/fi";
-import { portfolioData } from "@/utils/portfolioKnowledgeBase";
+import { personalData } from "@/utils/data/personal";
+import { uiData } from "@/utils/data/ui";
 
 // Icon mapping for core skills
 const iconMap = {
@@ -45,7 +46,7 @@ const AboutSection: React.FC = () => {
       <div className="max-w-7xl mx-auto w-full">        <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold inline-block">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-              {portfolioData.ui.about.heading}
+              {uiData.about.heading}
             </span>
           </h2>
           <div className="h-1 w-24 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto mt-4"></div>
@@ -68,9 +69,8 @@ const AboutSection: React.FC = () => {
                   sizes="(max-width: 768px) 256px, 320px"
                   priority
                 />                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-8 left-0 right-0 text-center text-white">
-                    <p className="font-bold text-xl">{portfolioData.ui.about.profileOverlay.name}</p>
-                    <p className="text-blue-200">{portfolioData.ui.about.profileOverlay.title}</p>
+                  <div className="absolute bottom-8 left-0 right-0 text-center text-white">                    <p className="font-bold text-xl">{uiData.about.profileOverlay.name}</p>
+                    <p className="text-blue-200">{uiData.about.profileOverlay.title}</p>
                   </div>
                 </div>
               </div>
@@ -83,7 +83,7 @@ const AboutSection: React.FC = () => {
             style={{ y: contentY }}
           >            {/* Core skills with icons */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {portfolioData.ui.about.coreSkills.map((skill, index) => (
+              {uiData.about.coreSkills.map((skill, index) => (
                 <motion.div
                   key={index}
                   className={`${skill.color} p-4 rounded-xl flex flex-col items-center text-center shadow-sm`}
@@ -107,7 +107,7 @@ const AboutSection: React.FC = () => {
                   whileHover={{ y: -5 }}
                 >
                   <p className="text-lg text-gray-700">
-                    {portfolioData.ui.about.paragraphs[0]}
+                    {uiData.about.paragraphs[0]}
                   </p>
                 </motion.div>
               </SlideIn>
@@ -118,7 +118,7 @@ const AboutSection: React.FC = () => {
                   whileHover={{ y: -5 }}
                 >
                   <p className="text-lg text-gray-700">
-                    {portfolioData.ui.about.paragraphs[1]}
+                    {uiData.about.paragraphs[1]}
                   </p>
                 </motion.div>
               </SlideIn>
@@ -137,7 +137,7 @@ const AboutSection: React.FC = () => {
               >
                 <div className="absolute inset-0 flex">
                   <span className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full hover:animate-shimmer"></span>
-                </div>                <span className="relative z-10">{portfolioData.ui.about.ctaButtons.contact}</span>
+                </div>                <span className="relative z-10">{uiData.about.ctaButtons.contact}</span>
               </motion.a>
               
               <motion.a 
@@ -153,7 +153,7 @@ const AboutSection: React.FC = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600 group-hover:text-blue-700 transition-colors" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>
-                <span className="text-gray-800 group-hover:text-blue-700 font-medium transition-colors">{portfolioData.ui.about.ctaButtons.cv}</span>
+                <span className="text-gray-800 group-hover:text-blue-700 font-medium transition-colors">{uiData.about.ctaButtons.cv}</span>
               </motion.a>
             </div>
           </motion.div>
