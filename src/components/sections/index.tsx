@@ -6,6 +6,7 @@ import SkillsSection from './SkillsSection';
 import CertificationsSection from './CertificationsSection';
 import LanguagesSection from './LanguagesSection';
 import PersonalStatementSection from './PersonalStatementSection';
+import BlogSection from './BlogSection';
 import ContactFooterSection from './ContactFooterSection';
 
 export {
@@ -17,5 +18,6 @@ export {
   CertificationsSection,
   LanguagesSection,
   PersonalStatementSection,
+  BlogSection,
   ContactFooterSection
 };

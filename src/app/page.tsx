@@ -12,6 +12,7 @@ import {
   CertificationsSection,
   LanguagesSection,
   PersonalStatementSection,
+  BlogSection,
   ContactFooterSection
 } from "@/components/sections";
 
@@ -29,9 +30,8 @@ export default function Home() {
       }
       
       // Set a small timeout to debounce scroll events
-      scrollTimeout = setTimeout(() => {
-        // Determine which section is active for nav highlighting
-        const sections = ['home', 'about', 'work', 'experience', 'skills', 'certifications', 'languages', 'statement', 'contact'];
+      scrollTimeout = setTimeout(() => {        // Determine which section is active for nav highlighting
+        const sections = ['home', 'about', 'work', 'experience', 'skills', 'certifications', 'languages', 'statement', 'blog', 'contact'];
         let currentSection = '';
         
         // Set home as active when at the top
@@ -146,10 +146,11 @@ export default function Home() {
         <CertificationsSection />
 
         {/* Languages & Extras Section */}
-        <LanguagesSection />
-
-        {/* Personal Statement Section */}
+        <LanguagesSection />        {/* Personal Statement Section */}
         <PersonalStatementSection />
+
+        {/* Blog Section */}
+        <BlogSection />
       </main>
 
       {/* Footer with Contact Information */}

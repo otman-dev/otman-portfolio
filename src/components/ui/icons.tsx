@@ -23,7 +23,8 @@ import {
   FiCloud,
   FiLayers,
   FiServer,
-  FiGlobe
+  FiGlobe,
+  FiEdit3
 } from 'react-icons/fi'
 
 // Icon system with consistent styling
@@ -57,6 +58,7 @@ const iconMap: Record<string, IconType> = {
   layers: FiLayers,
   server: FiServer,
   globe: FiGlobe,
+  blog: FiEdit3,
 }
 
 // Consistent icon component
@@ -126,4 +128,5 @@ export const Icons = {
   Layers: (props: Omit<IconProps, 'name'>) => <Icon name="layers" {...props} />,
   Server: (props: Omit<IconProps, 'name'>) => <Icon name="server" {...props} />,
   Globe: (props: Omit<IconProps, 'name'>) => <Icon name="globe" {...props} />,
+  Blog: (props: Omit<IconProps, 'name'>) => <Icon name="blog" {...props} />,
 }
