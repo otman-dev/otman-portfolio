@@ -190,22 +190,25 @@ const BlogSection: React.FC = () => {
                         <p className="text-gray-500 text-sm">Blog Post</p>
                       </div>
                     </div>
-                    
-                    {/* Overlay gradient */}
+                      {/* Overlay gradient */}
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent" />
-                    
-                    {/* Categories */}
-                    {post.categories.length > 0 && (
-                      <div className="absolute top-4 left-4">
-                        <span className="px-2 py-1 bg-blue-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full text-xs text-blue-300 font-medium">
-                          {post.categories[0]}
-                        </span>
-                      </div>
-                    )}
                   </div>
 
                   {/* Blog Post Content */}
-                  <div className="p-6">
+                  <div className="p-6">                    {/* Categories */}
+                    {post.categories.length > 0 && (
+                      <div className="mb-3 flex flex-wrap gap-2">
+                        {post.categories.map((category, index) => (
+                          <span 
+                            key={index}
+                            className="px-2 py-1 bg-blue-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full text-xs text-blue-300 font-medium"
+                          >
+                            {category}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    
                     {/* Date */}
                     <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

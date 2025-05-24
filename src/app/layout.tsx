@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins, Inter, Space_Grotesk, Quicksand } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -43,11 +45,11 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </head>
-      <body
-        className={`${poppins.variable} ${inter.variable} ${spaceGrotesk.variable} ${quicksand.variable} font-sans antialiased`}
-      >
+      </head>      <body
+        className={`${poppins.variable} ${inter.variable} ${spaceGrotesk.variable} ${quicksand.variable} font-sans antialiased`}      >
         {children}
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );

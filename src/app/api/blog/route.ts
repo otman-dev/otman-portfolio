@@ -31,14 +31,48 @@ export async function GET() {
           imageUrl = imgMatch[1];
         }
       }
-      
-      // Clean description
+        // Clean description
       const cleanDescription = item.description
         ? item.description.replace(/<[^>]*>/g, '').substring(0, 150) + '...'
         : '';
 
+      // Enhanced category/tag extraction to get ALL tags
+      let categories: string[] = [];
+      
+      // First, extract from RSS categories (this is the primary source)
+      if (item.categories && Array.isArray(item.categories)) {
+        categories = [...item.categories];
+      }
+      
+      // Also try to extract hashtags from content and description
+      const hashtagRegex = /#[\w]+/g;
+      const contentTags = (item.content || '').match(hashtagRegex);
+      const descriptionTags = (item.description || '').match(hashtagRegex);
+      
+      if (contentTags) {
+        const cleanContentTags = contentTags.map((tag: string) => tag.substring(1));
+        categories = [...categories, ...cleanContentTags];
+      }
+      
+      if (descriptionTags) {
+        const cleanDescTags = descriptionTags.map((tag: string) => tag.substring(1));
+        categories = [...categories, ...cleanDescTags];
+      }
+      
+      // Remove duplicates and clean up categories
+      categories = [...new Set(categories)]
+        .map((cat: string) => cat.trim())
+        .filter((cat: string) => cat.length > 0)
+        .slice(0, 5); // Limit to 5 tags maximum
+      
+      // If no categories found, add a fallback
+      if (categories.length === 0) {
+        categories = ['Article'];
+      }
+
       // Log for debugging
       console.log('Post:', item.title);
+      console.log('All extracted categories:', categories);
       console.log('Original thumbnail:', item.thumbnail);
       console.log('Extracted image:', imageUrl);
 
@@ -51,7 +85,7 @@ export async function GET() {
         thumbnail: imageUrl || null,
         description: cleanDescription,
         content: item.content,
-        categories: item.categories || []
+        categories: categories
       };
     });
 
