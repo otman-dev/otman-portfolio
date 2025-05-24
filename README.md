@@ -178,22 +178,31 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ### 🌟 **Experience the Portfolio Live**
 [![Portfolio Screenshot](https://img.shields.io/badge/🌐_Live_Demo-Visit_Now-4CAF50?style=for-the-badge&labelColor=2E7D32)](https://otman-portfolio.vercel.app)
 
-### **Key Interactive Features to Try:**
+**🚀 Deployed on Vercel:** [otman-portfolio.vercel.app](https://otman-portfolio.vercel.app)
+
+### **🎯 Key Interactive Features to Try:**
 
 | 🎯 Feature | 📝 Description | 🔗 Try It |
 |------------|----------------|-----------|
-| **AI Chatbot** | Ask about skills, projects, or experience | Click the chat bubble |
-| **Smooth Navigation** | Floating nav with progress indicators | Scroll through sections |
-| **Project Gallery** | Interactive work showcase | Visit "Work" section |
-| **Blog Integration** | Live Medium articles | Check "Blog" section |
-| **Contact Forms** | Multiple ways to connect | "Contact" section |
+| **🤖 AI Chatbot** | Ask about skills, projects, or experience | Click the chat bubble |
+| **🧭 Smart Navigation** | Floating nav with progress indicators | Scroll through sections |
+| **💼 Project Gallery** | Interactive work showcase with live demos | Visit "Work" section |
+| **📰 Blog Integration** | Live Medium articles with image extraction | Check "Blog" section |
+| **📞 Contact Forms** | Multiple ways to connect | "Contact" section |
+| **📄 Resume Download** | Professional CV in PDF format | Available in contact section |
 
 </div>
 
 ### 📱 **Responsive Design Preview**
-- **Desktop**: Full-width layout with advanced animations
-- **Tablet**: Optimized grid layouts and touch interactions  
-- **Mobile**: Single-column design with swipe gestures
+- **💻 Desktop**: Full-width layout with advanced animations and hover effects
+- **📱 Tablet**: Optimized grid layouts with touch-friendly interactions  
+- **📱 Mobile**: Single-column design with swipe gestures and mobile-first approach
+
+### 🎥 **Demo Videos & Screenshots**
+- **Hero Animation**: Smooth entrance with gradient text effects
+- **Chatbot Demo**: Real-time AI responses with typing indicators
+- **Blog Section**: Dynamic Medium integration with live updates
+- **Navigation Flow**: Seamless section transitions with progress tracking
 
 ### ⚡ **Performance Metrics**
 - **🏆 Lighthouse Score**: 95+ across all categories (Performance, Accessibility, Best Practices, SEO)
