@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useSpring, useTransform, useScroll } from "framer-motion";
-import { SlideIn, FadeIn, ScaleIn } from "@/components/animations";
-import React, { useRef, useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import React from "react";
 import { personalData } from "@/utils/data/personal";
 import { uiData } from "@/utils/data/ui";
 
@@ -11,178 +10,232 @@ interface HeroSectionProps {
   setActiveLink: (link: string) => void;
 }
 
-// Custom CSS for 3D perspective
-const perspectiveStyle = {
-  perspective: "1000px",
-  transformStyle: "preserve-3d"
-};
-
 const HeroSection: React.FC<HeroSectionProps> = ({ setActiveLink }) => {
-  // Scroll-based animations
-  const { scrollY } = useScroll();
-  const sectionRef = useRef<HTMLElement>(null);
-  
-  // Create spring animation for smoother transitions
-  const springConfig = { damping: 15, stiffness: 100 };
-  const y = useSpring(
-    useTransform(scrollY, [0, 300], [0, -100]), 
-    springConfig
-  );
-  
-  const opacity = useSpring(
-    useTransform(scrollY, [0, 300], [1, 0]), 
-    springConfig
-  );
-
-  // Mouse tracking for 3D perspective effect
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
-  
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const mouseXPercent = (e.clientX - rect.left) / rect.width;
-    const mouseYPercent = (e.clientY - rect.top) / rect.height;
-    setMouseX(mouseXPercent * 2 - 1); // -1 to 1
-    setMouseY(mouseYPercent * 2 - 1); // -1 to 1
-  };
-    // Animated gradient background position
-  const [gradientPosition, setGradientPosition] = useState({ x: 0, y: 0 });
-  
-  useEffect(() => {
-    const moveGradient = () => {
-      setGradientPosition({
-        x: mouseX * 20,
-        y: mouseY * 20
-      });
-    };
-    moveGradient();
-  }, [mouseX, mouseY]);
-  // Define meteor type
-  interface Meteor {
-    id: number;
-    top: number;
-    left: number;
-    duration: number;
-    delay: number;
-  }
-  
-  // Create meteor effect elements
-  const [meteors, setMeteors] = useState<Meteor[]>([]);
-  
-  // Generate meteors only on the client side to avoid hydration mismatch
-  useEffect(() => {
-    const generatedMeteors = Array.from({ length: 8 }).map((_, i) => ({
-      id: i,
-      top: Math.random() * 100,
-      left: Math.random() * 100,
-      duration: Math.random() * 3 + 2,
-      delay: Math.random() * 5
-    }));
-    setMeteors(generatedMeteors);
-  }, []);
   return (
     <section 
       id="home"
-      ref={sectionRef}
-      className="min-h-screen flex flex-col justify-center items-center py-16 px-4 sm:px-6 relative overflow-hidden" 
-      onMouseMove={handleMouseMove}
+      className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden"
     >
-      {/* 3D perspective wrapper */}
-      <div className="w-full max-w-7xl mx-auto perspective-1000">        {/* Clean background - removed all decorative elements */}
-        <div className="absolute inset-0 -z-10">
-          {/* Background now uses global CSS background */}
-        </div>
-
+      {/* Background Elements */}
+      <div className="absolute inset-0 -z-10">
+        {/* Animated gradient orbs */}
         <motion.div 
-          className="relative z-10 text-center lg:text-left"
-          style={{ y, opacity }}
-        >          {/* Logo with simple hover effect */}
-          <div className="flex justify-center lg:justify-start mb-8 relative">
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            x: [0, 50, 0],
+            y: [0, -30, 0]
+          }}
+          transition={{ 
+            duration: 8, 
+            repeat: Infinity, 
+            ease: "easeInOut" 
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl"
+          animate={{ 
+            scale: [1.2, 1, 1.2],
+            x: [0, -40, 0],
+            y: [0, 40, 0]
+          }}
+          transition={{ 
+            duration: 10, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: 1
+          }}
+        />
+      </div>
+
+      <div className="max-w-4xl mx-auto w-full text-center">
+        
+        {/* Logo with Animation */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.5, rotateY: 180 }}
+          animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="flex justify-center mb-8"
+        >
+          <div className="relative">
             <motion.div 
-              className="relative"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              className="w-32 h-32 lg:w-40 lg:h-40 relative"
+              animate={{ 
+                rotateY: [0, 360],
+              }}
+              transition={{ 
+                duration: 20, 
+                repeat: Infinity, 
+                ease: "linear" 
+              }}
             >
               <Image 
                 src="/LogoMouhibOtman(1).svg"
                 alt="Otman Mouhib Logo"
-                width={130}
-                height={130}
-                className="relative z-10"
+                fill
+                className="object-contain drop-shadow-2xl"
                 priority
               />
-            </motion.div>
+            </motion.div>            {/* Subtle glowing ring around logo */}
+            <motion.div 
+              className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 opacity-30 blur-2xl"
+              animate={{ 
+                scale: [1, 1.05, 1],
+                opacity: [0.2, 0.3, 0.2]
+              }}
+              transition={{ 
+                duration: 4, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+            />
           </div>
-          
-          {/* Main heading with 3D effect */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            style={{ 
-              transformStyle: "preserve-3d",
-              transform: `perspective(1000px) rotateX(${mouseY * 2}deg) rotateY(${-mouseX * 2}deg)`
-            }}
-          >            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
-              {uiData.hero.mainHeading.split(' ').slice(0, 3).join(' ')} 
-              <span className="relative block mt-2">
-                {/* Animated underline effect */}
-                <span className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></span>
-                {/* Text with gradient and clip path animation */}
-                <span className="bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 bg-clip-text text-transparent relative inline-block">
-                  {uiData.hero.mainHeading.split(' ').slice(3).join(' ')}
-                </span>
-              </span>
-            </h1>
-          </motion.div>
-            {/* Description paragraph */}
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto lg:mx-0 mb-8"
+        </motion.div>
+
+        {/* Main Greeting */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="space-y-6 mb-8"
+        >
+          <motion.h1 
+            className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.5 }}
           >
-            {uiData.hero.description}
-          </motion.p>
+            <motion.span 
+              className="block text-2xl md:text-3xl lg:text-4xl font-normal text-gray-400 mb-4"
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+            >
+              Welcome to my digital world
+            </motion.span>
+            <motion.span 
+              className="block bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.9 }}
+            >
+              I'm Otman Mouhib
+            </motion.span>
+          </motion.h1>
           
-          {/* CTA buttons */}
           <motion.div 
+            className="flex flex-wrap justify-center gap-3 text-lg md:text-xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="flex flex-wrap gap-4 justify-center lg:justify-start"
+            transition={{ duration: 0.8, delay: 1.1 }}
           >
-            <motion.a 
-              href="#work"
-              className="px-6 py-3 relative overflow-hidden group bg-blue-600 text-white font-medium rounded-lg shadow-lg transition-all duration-300 inline-block cursor-pointer"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
-                setActiveLink('work');
-              }}
-            >              {/* Button hover shine effect */}
-              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white to-transparent -translate-x-full group-hover:translate-x-full transition-all duration-700 opacity-30"></span>
-              {uiData.hero.ctaButtons.primary}
-            </motion.a>
-            
-            <motion.a 
-              href="#contact"
-              className="px-6 py-3 relative overflow-hidden group border-2 border-blue-600 text-blue-600 font-medium rounded-lg shadow-md transition-all duration-300 inline-block cursor-pointer"
-              whileHover={{ scale: 1.05, borderColor: "#4338ca" }}
-              whileTap={{ scale: 0.95 }}
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                setActiveLink('contact');
-              }}
-            >              {/* Button hover background effect */}
-              <span className="absolute inset-0 w-full h-full backdrop-blur-sm opacity-10 -translate-y-full group-hover:translate-y-0 transition-all duration-300"></span>
-              <span className="relative">{uiData.hero.ctaButtons.secondary}</span>
-            </motion.a>
+            {["Creator", "Innovator", "Problem Solver", "Tech Enthusiast"].map((word, index) => (
+              <motion.span
+                key={word}
+                className="px-4 py-2 bg-gray-800/50 backdrop-blur-sm rounded-full text-gray-300 border border-gray-700"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 1.3 + index * 0.1 }}
+                whileHover={{ 
+                  scale: 1.05,
+                  backgroundColor: "rgba(59, 130, 246, 0.1)",
+                  borderColor: "rgba(59, 130, 246, 0.3)"
+                }}
+              >
+                {word}
+              </motion.span>
+            ))}
           </motion.div>
-        </motion.div>      </div>
+        </motion.div>
+
+        {/* Inspiring Description */}
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.5 }}
+          className="text-xl md:text-2xl text-gray-400 leading-relaxed max-w-3xl mx-auto mb-12"
+        >
+          Transforming ideas into <span className="text-blue-400 font-semibold">extraordinary digital experiences</span>. 
+          Let's build something <span className="text-purple-400 font-semibold">amazing</span> together!
+        </motion.p>
+
+        {/* CTA Buttons */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.7 }}
+          className="flex flex-col sm:flex-row gap-6 justify-center mb-16"
+        >
+          <motion.button
+            onClick={() => {
+              document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
+              setActiveLink('work');
+            }}
+            className="group relative px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg rounded-2xl overflow-hidden transition-all duration-300"
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: "0 20px 40px -10px rgba(59, 130, 246, 0.4)"
+            }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span className="relative z-10 flex items-center gap-3">
+              🚀 Explore My Work
+            </span>
+            <motion.div 
+              className="absolute inset-0 bg-gradient-to-r from-blue-700 to-purple-700"
+              initial={{ x: '-100%' }}
+              whileHover={{ x: 0 }}
+              transition={{ duration: 0.3 }}
+            />
+          </motion.button>
+
+          <motion.button
+            onClick={() => {
+              document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+              setActiveLink('contact');
+            }}
+            className="group px-10 py-5 border-2 border-gray-600 text-gray-300 font-bold text-lg rounded-2xl transition-all duration-300 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-400/5"
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: "0 20px 40px -10px rgba(59, 130, 246, 0.2)"
+            }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span className="flex items-center gap-3">
+              💬 Let's Connect
+            </span>
+          </motion.button>
+        </motion.div>
+
+        {/* Animated Tech Stack */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.9 }}
+          className="space-y-4"
+        >
+          <p className="text-gray-500 text-sm uppercase tracking-widest">Powered by</p>
+          <motion.div 
+            className="flex flex-wrap justify-center gap-4 text-gray-400"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 2.1 }}
+          >
+            {["React", "Next.js", "TypeScript", "Node.js", "AI/ML", "Cloud"].map((tech, index) => (
+              <motion.span
+                key={tech}
+                className="text-sm font-medium hover:text-blue-400 transition-colors cursor-default"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 2.3 + index * 0.1 }}
+                whileHover={{ scale: 1.1, color: "#60a5fa" }}
+              >
+                {tech}
+              </motion.span>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
     </section>
   );
 };

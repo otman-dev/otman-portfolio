@@ -25,6 +25,9 @@ interface FloatingNavigationProps {
 const FloatingNavigation = ({ activeLink, setActiveLink }: FloatingNavigationProps) => {
   const [isWideScreen, setIsWideScreen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
   
   // Handle client-side operations
   useEffect(() => {
@@ -55,6 +58,36 @@ const FloatingNavigation = ({ activeLink, setActiveLink }: FloatingNavigationPro
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  // Handle scroll detection for compact mode
+  useEffect(() => {
+    let scrollTimeout: NodeJS.Timeout;
+    
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Only trigger compact mode if user is actively scrolling (not just at top)
+      if (Math.abs(currentScrollY - lastScrollY) > 5) {
+        setIsScrolling(true);
+        setLastScrollY(currentScrollY);
+        
+        // Clear existing timeout
+        clearTimeout(scrollTimeout);
+        
+        // Set new timeout to exit scrolling state
+        scrollTimeout = setTimeout(() => {
+          setIsScrolling(false);
+        }, 1500); // Stay compact for 1.5 seconds after scrolling stops
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, [lastScrollY]);
     // Handle nav link click with improved mobile support
   const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement> | React.TouchEvent<HTMLAnchorElement>, section: string) => {
     e.preventDefault();
@@ -98,25 +131,31 @@ const FloatingNavigation = ({ activeLink, setActiveLink }: FloatingNavigationPro
         block: 'center'
       });
     }
-  }, [isMobile, setActiveLink]);
+  }, [isMobile, setActiveLink]);  // Determine if nav should be compact
+  const isCompact = isScrolling && !isHovered;
+  
   return (
     <motion.div
       className="fixed z-50 bottom-0 left-0 right-0 hidden md:flex flex-col items-center px-4 pb-4 md:pb-6 pointer-events-none"
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.3 }}
-    >{/* Subtle indicator line at top of navigation */}      <motion.div 
-        className="h-1 bg-gradient-to-r from-transparent via-blue-500/40 to-transparent rounded-full mb-2 pointer-events-none animate-nav-indicator"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-      />
-      <div className="w-full max-w-lg md:max-w-xl mx-auto pointer-events-auto">        <motion.nav 
-          className="bg-neutral-800/80 backdrop-blur-md rounded-full shadow-lg border border-neutral-700 py-3 px-2 sm:px-4 flex justify-around items-center"
+    >
+      <div className="w-full max-w-lg md:max-w-xl mx-auto pointer-events-auto">
+        <motion.nav 
+          className="bg-gray-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-700/50 flex justify-around items-center relative overflow-hidden"
           initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
+          animate={{ 
+            opacity: 1, 
+            scale: 1,
+            width: isCompact ? "auto" : "100%",
+            paddingTop: isCompact ? "8px" : "16px",
+            paddingBottom: isCompact ? "8px" : "16px",
+            paddingLeft: isCompact ? "12px" : "24px",
+            paddingRight: isCompact ? "12px" : "24px"
+          }}
           transition={{ 
-            delay: 0.3,
+            duration: 0.3,
             type: "spring",
             stiffness: 300,
             damping: 25
@@ -125,21 +164,55 @@ const FloatingNavigation = ({ activeLink, setActiveLink }: FloatingNavigationPro
             touchAction: 'manipulation',
             WebkitTapHighlightColor: 'transparent'
           }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
-          {navItems.map((item) => (              <a
+          {/* Background gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-blue-500/5 opacity-50" />
+          
+          {/* Subtle glow effect */}
+          <motion.div 
+            className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-blue-500/20 rounded-2xl blur-sm transition-opacity duration-500"
+            animate={{ opacity: isHovered ? 0.3 : 0 }}
+          />
+          
+          {/* Progress indicator when compact */}
+          {isCompact && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              className="absolute top-1 left-1/2 transform -translate-x-1/2 flex space-x-1"
+            >
+              {navItems.map((item) => (
+                <div
+                  key={`progress-${item.id}`}
+                  className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                    activeLink === item.id 
+                      ? 'bg-blue-400 scale-125' 
+                      : 'bg-gray-600 scale-100'
+                  }`}
+                />
+              ))}
+            </motion.div>
+          )}
+          
+          {navItems.map((item, index) => (
+            <motion.a
               key={item.id}
               href={`#${item.id}`}
               onClick={(e) => handleNavClick(e, item.id)}
               onTouchStart={(e) => {
-                // Prevent any default touch behavior that might interfere
                 e.stopPropagation();
               }}
               onTouchEnd={(e) => {
-                // Handle touch end event for better mobile performance
                 e.preventDefault();
                 handleNavClick(e, item.id);
-              }}              className={`relative group flex flex-col items-center justify-center p-3 md:p-2 transition-all duration-300 focus-visible ${
-                activeLink === item.id ? 'text-blue-400 scale-105' : 'text-gray-300 hover:text-blue-300 hover:scale-105'
+              }}
+              className={`relative group flex flex-col items-center justify-center transition-all duration-300 focus-visible rounded-xl ${
+                activeLink === item.id 
+                  ? 'text-blue-400' 
+                  : 'text-gray-400 hover:text-blue-300'
               }`}
               aria-label={`Navigate to ${item.label} section`}
               aria-current={activeLink === item.id ? 'page' : undefined}
@@ -152,20 +225,30 @@ const FloatingNavigation = ({ activeLink, setActiveLink }: FloatingNavigationPro
                 }
               }}
               style={{ touchAction: 'manipulation' }}
+              animate={{
+                padding: isCompact ? "6px" : "12px 8px",
+                scale: activeLink === item.id ? (isCompact ? 1.2 : 1.05) : 1
+              }}
+              whileHover={{ 
+                scale: isCompact ? 1.3 : 1.15,
+                y: isCompact ? -2 : -3
+              }}
             >
-              <div className="relative">
+              <div className="relative z-10">
                 {/* Icon */}
                 <motion.div 
-                  className="text-xl"
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  transition={{ type: "spring", stiffness: 400 }}
+                  className="transition-all duration-300"
+                  animate={{
+                    fontSize: isCompact ? "16px" : "20px"
+                  }}
                 >
                   {item.icon}
                 </motion.div>
                 
-                {/* Active indicator */}                {activeLink === item.id && (
+                {/* Active indicator with gradient - hidden when compact */}
+                {activeLink === item.id && !isCompact && (
                   <motion.div
-                    className="absolute -inset-2.5 rounded-full bg-blue-900/60"
+                    className="absolute -inset-3 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30"
                     layoutId="activeSection"
                     transition={{
                       type: "spring",
@@ -175,25 +258,53 @@ const FloatingNavigation = ({ activeLink, setActiveLink }: FloatingNavigationPro
                     style={{ zIndex: -1 }}
                   />
                 )}
+                
+                {/* Hover indicator */}
+                <motion.div
+                  className="absolute -inset-3 rounded-xl bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  style={{ zIndex: -2 }}
+                />
               </div>
-              {/* Label - only visible on wider screens or on active item for mobile */}
+              
+              {/* Label - hidden when compact, shown when expanded */}
               <AnimatePresence>
-                {(activeLink === item.id || isWideScreen) && (
+                {!isCompact && (activeLink === item.id || isWideScreen || isHovered) && (
                   <motion.span
                     initial={{ opacity: 0, y: -5, height: 0 }}
                     animate={{ opacity: 1, y: 0, height: 'auto' }}
                     exit={{ opacity: 0, y: -5, height: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className={`text-xs mt-1 font-medium ${
-                      activeLink === item.id ? 'block' : 'hidden sm:block'
+                    transition={{ duration: 0.2, delay: isHovered ? 0.1 : 0 }}
+                    className={`text-xs mt-1.5 font-medium relative z-10 ${
+                      activeLink === item.id 
+                        ? 'block text-blue-300' 
+                        : 'hidden sm:block text-gray-500 group-hover:text-gray-300'
                     }`}
                   >
                     {item.label}
                   </motion.span>
                 )}
               </AnimatePresence>
-            </a>
+              
+              {/* Subtle dot indicator for active state - only when not compact */}
+              {activeLink === item.id && !isCompact && (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-blue-400 rounded-full"
+                />
+              )}
+            </motion.a>
           ))}
+          
+          {/* Bottom accent line - hidden when compact */}
+          {!isCompact && (
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              exit={{ scaleX: 0 }}
+              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-0.5 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent rounded-full"
+            />
+          )}
         </motion.nav>
       </div>
     </motion.div>

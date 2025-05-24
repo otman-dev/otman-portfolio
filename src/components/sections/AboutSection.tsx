@@ -1,157 +1,200 @@
 "use client";
 
 import Image from "next/image";
-import { FadeIn, SlideIn, ScaleIn } from "@/components/animations";
-import { motion, useScroll, useTransform } from "framer-motion";
-import React, { useRef } from "react";
-import { FiCpu, FiCloud, FiLayers, FiDatabase } from "react-icons/fi";
-import { personalData } from "@/utils/data/personal";
-import { uiData } from "@/utils/data/ui";
+import { motion } from "framer-motion";
+import React from "react";
+import { Icons } from "@/components/ui/icons";
 
-// Icon mapping for core skills
-const iconMap = {
-  ai: <FiCpu className="text-blue-600" size={24} />,
-  iot: <FiCloud className="text-indigo-600" size={24} />,
-  web: <FiLayers className="text-purple-600" size={24} />,
-  data: <FiDatabase className="text-cyan-600" size={24} />
-};
+const AboutSection: React.FC = () => {  const skills = [
+    { 
+      icon: <Icons.Code className="w-6 h-6" />, 
+      title: "Full-Stack Development", 
+      description: "Modern web applications with React, Next.js, Node.js" 
+    },
+    { 
+      icon: <Icons.CPU className="w-6 h-6" />, 
+      title: "AI & Machine Learning", 
+      description: "Intelligent solutions with Python, TensorFlow, OpenAI" 
+    },
+    { 
+      icon: <Icons.Cloud className="w-6 h-6" />, 
+      title: "Cloud Architecture", 
+      description: "Scalable infrastructure with AWS, Docker, Kubernetes" 
+    },
+    { 
+      icon: <Icons.Database className="w-6 h-6" />, 
+      title: "Data Engineering", 
+      description: "Big data processing and analytics pipelines" 
+    }
+  ];
 
-const AboutSection: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  // Subtle parallax effect on scroll
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
+  const stats = [
+    { value: "5+", label: "Years Experience" },
+    { value: "50+", label: "Projects Delivered" },
+    { value: "15+", label: "Technologies Mastered" },
+    { value: "100%", label: "Client Satisfaction" }
+  ];
 
-  const imageY = useTransform(scrollYProgress, [0, 1], [50, -50]);
-  const contentY = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  
   return (
     <section 
       id="about" 
-      ref={containerRef}
-      className="min-h-screen flex flex-col justify-center relative border-t border-gray-200 py-16 sm:py-20 px-4 sm:px-6 overflow-hidden"
-      style={{minHeight: '100vh', paddingTop: 'calc(10vh + 20px)', paddingBottom: '10vh'}}
-    >      {/* Background decoration - removed circles for clean design */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full">
-          {/* Clean background */}
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto w-full">        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold inline-block">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-              {uiData.about.heading}
-            </span>
+      className="min-h-screen flex items-center py-20 px-4 sm:px-6 lg:px-8"
+    >
+      <div className="max-w-7xl mx-auto w-full">
+        
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            About <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Me</span>
           </h2>
-          <div className="h-1 w-24 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto mt-4"></div>
-        </div>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            Passionate developer crafting innovative solutions at the intersection of technology and creativity
+          </p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left column - Photo with modern frame */}
-          <motion.div 
-            className="lg:col-span-5 flex justify-center"
-            style={{ y: imageY }}
-          >            <div className="relative">
-              <div className="group relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-gray-700 shadow-xl">
-                <Image
-                  src="/profile_photo.jpg"
-                  alt="Otman Mouhib"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  sizes="(max-width: 768px) 256px, 320px"
-                  priority
-                />                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-8 left-0 right-0 text-center text-white">                    <p className="font-bold text-xl">{uiData.about.profileOverlay.name}</p>
-                    <p className="text-blue-200">{uiData.about.profileOverlay.title}</p>
+        <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
+          
+          {/* Left Column - Content */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="space-y-8"
+          >            <div className="space-y-6">
+              <p className="text-lg text-gray-300 leading-relaxed">
+                <span className="text-blue-400 font-semibold">5+ years</span> crafting digital solutions that matter. 
+                I transform complex ideas into <span className="text-purple-400 font-semibold">scalable applications</span> 
+                using cutting-edge technologies.
+              </p>
+              
+              <p className="text-lg text-gray-300 leading-relaxed">
+                From <span className="text-cyan-400 font-semibold">AI-powered backends</span> to 
+                <span className="text-blue-400 font-semibold"> pixel-perfect frontends</span> — 
+                I build the full stack with precision and passion.
+              </p>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 pt-6">
+              <motion.button
+                onClick={() => {
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/25"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >                <span className="flex items-center justify-center gap-2">
+                  Let's Connect
+                  <Icons.Arrow className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </motion.button>
+
+              <motion.a
+                href="/CV_OtmanMouhib.pdf"
+                download
+                className="group px-8 py-4 border-2 border-gray-600 text-gray-300 font-semibold rounded-lg transition-all duration-300 hover:border-blue-400 hover:text-blue-400"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <span className="flex items-center justify-center gap-2">
+                  <Icons.Download className="w-4 h-4" />
+                  Download CV
+                </span>
+              </motion.a>
+            </div>
+          </motion.div>
+
+          {/* Right Column - Profile Image */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="flex justify-center lg:justify-end"
+          >
+            <div className="relative">
+              <div className="w-80 h-80 lg:w-96 lg:h-96 relative">
+                {/* Gradient border */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-cyan-500 rounded-2xl p-1">
+                  <div className="w-full h-full bg-gray-900 rounded-2xl overflow-hidden">
+                    <Image
+                      src="/profile_photo.jpg"
+                      alt="Otman Mouhib"
+                      fill
+                      className="object-cover"
+                      priority
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </motion.div>
-          
-          {/* Right column - Content with skills */}
-          <motion.div 
-            className="lg:col-span-7 space-y-8"
-            style={{ y: contentY }}
-          >            {/* Core skills with icons */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {uiData.about.coreSkills.map((skill, index) => (
-                <motion.div
-                  key={index}
-                  className={`${skill.color} p-4 rounded-xl flex flex-col items-center text-center shadow-sm`}
-                  whileHover={{ 
-                    y: -5, 
-                    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
-                  }}
-                >
-                  <div className="mb-2">
-                    {iconMap[skill.category as keyof typeof iconMap]}
-                  </div>
-                  <p className="font-medium text-gray-800">{skill.name}</p>
-                </motion.div>
-              ))}
-            </div>
-              {/* About me content in cards */}
-            <div className="space-y-4">
-              <SlideIn direction="left" delay={0.3}>                <motion.div
-                  className="backdrop-blur-sm rounded-xl p-5 border border-gray-100 shadow-md"
-                  whileHover={{ y: -5 }}
-                >
-                  <p className="text-lg text-gray-700">
-                    {uiData.about.paragraphs[0]}
-                  </p>
-                </motion.div>
-              </SlideIn>
-              
-              <SlideIn direction="left" delay={0.4}>                <motion.div
-                  className="backdrop-blur-sm rounded-xl p-5 border border-blue-100 shadow-md"
-                  whileHover={{ y: -5 }}
-                >
-                  <p className="text-lg text-gray-700">
-                    {uiData.about.paragraphs[1]}
-                  </p>
-                </motion.div>
-              </SlideIn>
-            </div>
-            
-            {/* Call to action buttons */}
-            <div className="pt-4 flex flex-col sm:flex-row gap-4">
-              <motion.a 
-                href="#contact" 
-                className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-center text-white font-medium px-6 py-3 rounded-lg transition-all"
-                whileHover={{ 
-                  scale: 1.03,
-                  boxShadow: "0 10px 15px -3px rgba(59, 130, 246, 0.3)"
-                }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <div className="absolute inset-0 flex">
-                  <span className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full hover:animate-shimmer"></span>
-                </div>                <span className="relative z-10">{uiData.about.ctaButtons.contact}</span>
-              </motion.a>
-              
-              <motion.a 
-                href="/CV_OtmanMouhib.pdf" 
-                download 
-                className="border-2 border-gray-200 hover:border-blue-400 text-center px-6 py-3 rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm"
-                whileHover={{ 
-                  scale: 1.03, 
-                  boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1)"
-                }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600 group-hover:text-blue-700 transition-colors" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-                <span className="text-gray-800 group-hover:text-blue-700 font-medium transition-colors">{uiData.about.ctaButtons.cv}</span>
-              </motion.a>
-            </div>
-          </motion.div>
         </div>
+
+        {/* Skills Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="mb-20"
+        >
+          <h3 className="text-3xl font-bold text-white text-center mb-12">
+            Core <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Expertise</span>
+          </h3>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {skills.map((skill, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
+                className="group p-6 bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 hover:border-blue-500/50 transition-all duration-300"
+              >
+                <div className="text-blue-400 mb-4 group-hover:text-blue-300 transition-colors">
+                  {skill.icon}
+                </div>
+                <h4 className="text-lg font-semibold text-white mb-2">{skill.title}</h4>
+                <p className="text-gray-400 text-sm leading-relaxed">{skill.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Stats Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-8 p-8 bg-gray-800/30 backdrop-blur-sm rounded-2xl border border-gray-700"
+        >
+          {stats.map((stat, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="text-center"
+            >
+              <div className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
+                {stat.value}
+              </div>
+              <div className="text-gray-400 text-sm uppercase tracking-wide">{stat.label}</div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

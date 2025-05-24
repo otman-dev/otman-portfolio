@@ -121,7 +121,7 @@ export const uiData: UIContent = {
     socialLinks: {
       email: {
         label: "Email me at",
-        text: "contact@otmanmouhib.com"
+        text: "mouhib.otman@gmail.com"
       },
       linkedin: {
         label: "Connect on",

@@ -38,13 +38,13 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
-  return (
+}>) {  return (
     <html lang="en" className="scroll-smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </head>      <body
+      </head>
+      <body
         className={`${poppins.variable} ${inter.variable} ${spaceGrotesk.variable} ${quicksand.variable} font-sans antialiased`}
       >
         {children}
