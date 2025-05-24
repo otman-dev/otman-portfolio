@@ -17,25 +17,19 @@ const ExperienceSection: React.FC = () => {
       style={{minHeight: '100vh', paddingTop: '10vh', paddingBottom: '10vh'}}
     >
       <div className="max-w-7xl mx-auto w-full flex flex-col items-center">
-        <h2 className="text-2xl md:text-3xl font-semibold mb-8 md:mb-12 inline-block border-b-2 border-blue-500 pb-1 text-center">Professional Experience</h2>
-        <div className="space-y-8 w-full max-w-4xl">
+        <h2 className="text-2xl md:text-3xl font-semibold mb-8 md:mb-12 inline-block border-b-2 border-blue-500 pb-1 text-center">Professional Experience</h2>        <div className="space-y-8 w-full max-w-4xl">
           {displayExperiences.map((experience, index) => (
-            <div key={experience.id} className="relative pl-8 md:pl-0 bg-white/50 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-gray-100 hover:shadow-md transition-all duration-300">
-              <div className="hidden md:block absolute left-8 top-0 bottom-0 w-1 bg-blue-100"></div>
-              <div className="md:ml-12 relative">
-                <div className="hidden md:flex absolute -left-12 w-10 h-10 rounded-full bg-blue-100 items-center justify-center shadow">
-                  <div className="w-4 h-4 rounded-full bg-blue-500"></div>
-                </div>
+            <div key={experience.id} className="bg-white/50 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-gray-100 hover:shadow-md transition-all duration-300">
+              <div className="relative">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
-                  <h3 className="text-xl font-semibold flex items-center">
-                    <span className="md:hidden mr-3 text-blue-500">●</span>
+                  <h3 className="text-xl font-semibold">
                     {experience.title}
                   </h3>
                   <span className="text-sm text-gray-500 md:ml-4">{experience.duration}</span>
                 </div>
                 <div className="flex flex-col md:flex-row md:items-center mb-3">
                   <p className="text-blue-600 font-medium">{experience.company}</p>
-                  <span className="text-gray-500 text-sm md:ml-2">• {experience.location}</span>
+                  <span className="text-gray-500 text-sm md:ml-2">{experience.location}</span>
                 </div>
                 <p className="text-gray-700 mb-4">{experience.description}</p>
                 
@@ -58,7 +52,7 @@ const ExperienceSection: React.FC = () => {
                     <ul className="text-sm text-gray-700 space-y-1">
                       {experience.achievements.slice(0, 2).map((achievement, achIndex) => (
                         <li key={achIndex} className="flex items-start">
-                          <span className="text-blue-500 mr-2">•</span>
+                          <span className="mr-2">-</span>
                           {achievement}
                         </li>
                       ))}
