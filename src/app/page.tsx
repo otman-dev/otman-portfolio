@@ -124,10 +124,9 @@ export default function Home() {
       {/* Floating Navigation Component */}
       <FloatingNavigation 
         activeLink={activeLink}
-        setActiveLink={setActiveLink}
-      />
+        setActiveLink={setActiveLink}      />
 
-      <main id="home" className="px-4 max-w-7xl mx-auto">
+      <main className="px-4 max-w-7xl mx-auto">
         {/* Welcome Hero Section */}
         <HeroSection setActiveLink={setActiveLink} />
 

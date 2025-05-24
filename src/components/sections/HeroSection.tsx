@@ -80,7 +80,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ setActiveLink }) => {
     }));
     setMeteors(generatedMeteors);
   }, []);
-  
   return (
     <section 
       id="home"
