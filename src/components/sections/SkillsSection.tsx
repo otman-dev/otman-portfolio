@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { skillsData } from "@/utils/data";
+import { skillsData } from "@/utils/data/skills";
 
 const SkillsSection: React.FC = () => {
   return (

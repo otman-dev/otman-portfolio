@@ -5,7 +5,8 @@ import { FadeIn, SlideIn, ScaleIn } from "@/components/animations";
 import { motion, useScroll, useTransform } from "framer-motion";
 import React, { useRef } from "react";
 import { FiCpu, FiCloud, FiLayers, FiDatabase } from "react-icons/fi";
-import { personalData, uiData } from "@/utils/data";
+import { personalData } from "@/utils/data/personal";
+import { uiData } from "@/utils/data/ui";
 
 // Icon mapping for core skills
 const iconMap = {

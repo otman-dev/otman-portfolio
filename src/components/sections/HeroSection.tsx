@@ -4,7 +4,8 @@ import Image from "next/image";
 import { motion, useSpring, useTransform, useScroll } from "framer-motion";
 import { SlideIn, FadeIn, ScaleIn } from "@/components/animations";
 import React, { useRef, useState, useEffect } from "react";
-import { personalData, uiData } from "@/utils/data";
+import { personalData } from "@/utils/data/personal";
+import { uiData } from "@/utils/data/ui";
 
 interface HeroSectionProps {
   setActiveLink: (link: string) => void;

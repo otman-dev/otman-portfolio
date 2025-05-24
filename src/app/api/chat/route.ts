@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Groq } from 'groq-sdk';
-import { personalData, experiencesData, skillsData } from '@/utils/data';
+import { personalData } from '@/utils/data/personal';
+import { experiencesData } from '@/utils/data/experiences';
+import { skillsData } from '@/utils/data/skills';
 
 export async function POST(req: NextRequest) {
   try {
