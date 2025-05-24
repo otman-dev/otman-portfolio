@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { experiencesData } from "@/utils/data/experiences";
+import { experiencesData } from "@/utils/data";
 
 const ExperienceSection: React.FC = () => {
   const [showAll, setShowAll] = useState(false);
