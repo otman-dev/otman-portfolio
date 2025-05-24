@@ -10,7 +10,8 @@ interface Message {
 }
 
 const ChatComponent: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);  const [messages, setMessages] = useState<Message[]>([
+  const [isOpen, setIsOpen] = useState(false);
+  const [showLabel, setShowLabel] = useState(true);const [messages, setMessages] = useState<Message[]>([
     {
       role: 'system',
       content: `You are an AI assistant for Mouhib Otman, a professional with expertise in AI Research, IoT Systems, Full-Stack Development, and Data Engineering.
@@ -68,11 +69,27 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
-    }  }, [isOpen]);
+    }
+  }, [isOpen]);
+
+  // Hide label after 8 seconds or when chat is opened
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLabel(false);
+    }, 8000); // Hide after 8 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Hide label when chat is opened
+  useEffect(() => {
+    if (isOpen) {
+      setShowLabel(false);
+    }
+  }, [isOpen]);
     // Scroll to bottom functionality is handled above
 
   // Send message to API
@@ -125,11 +142,19 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
   return (
     <>      {/* Chat button with label */}
       <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end">
-        {!isOpen && (
-          <div className="mb-2 px-3 py-1.5 bg-gray-800/90 backdrop-blur-xl rounded-full shadow-lg text-sm font-medium text-white border border-gray-700">
-            Ask me anything!
-          </div>
-        )}
+        <AnimatePresence>
+          {!isOpen && showLabel && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.3 }}
+              className="mb-2 px-3 py-1.5 bg-gray-800/90 backdrop-blur-xl rounded-full shadow-lg text-sm font-medium text-white border border-gray-700"
+            >
+              Ask me anything!
+            </motion.div>
+          )}
+        </AnimatePresence>
         <motion.button
           onClick={() => setIsOpen(prev => !prev)}
           className="p-4 rounded-full bg-gray-800/90 backdrop-blur-xl text-white shadow-lg border border-gray-700 hover:bg-gray-700/90 hover:border-gray-600 transition-all duration-200"
