@@ -34,12 +34,10 @@ const AboutSection: React.FC = () => {
       ref={containerRef}
       className="min-h-screen flex flex-col justify-center relative border-t border-gray-200 py-16 sm:py-20 px-4 sm:px-6 overflow-hidden"
       style={{minHeight: '100vh', paddingTop: 'calc(10vh + 20px)', paddingBottom: '10vh'}}
-    >
-      {/* Background decoration */}
+    >      {/* Background decoration - removed circles for clean design */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full">
-          <div className="absolute top-1/3 -left-24 w-64 h-64 rounded-full bg-blue-100/50 mix-blend-multiply filter blur-3xl opacity-70"></div>
-          <div className="absolute top-2/3 -right-24 w-64 h-64 rounded-full bg-indigo-100/50 mix-blend-multiply filter blur-3xl opacity-70"></div>
+          {/* Clean background */}
         </div>
       </div>
 
@@ -57,10 +55,8 @@ const AboutSection: React.FC = () => {
           <motion.div 
             className="lg:col-span-5 flex justify-center"
             style={{ y: imageY }}
-          >
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-full blur-xl"></div>
-              <div className="group relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-xl">
+          >            <div className="relative">
+              <div className="group relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-gray-700 shadow-xl">
                 <Image
                   src="/profile_photo.jpg"
                   alt="Otman Mouhib"
@@ -101,9 +97,8 @@ const AboutSection: React.FC = () => {
             </div>
               {/* About me content in cards */}
             <div className="space-y-4">
-              <SlideIn direction="left" delay={0.3}>
-                <motion.div
-                  className="bg-white/80 backdrop-blur-sm rounded-xl p-5 border border-gray-100 shadow-md"
+              <SlideIn direction="left" delay={0.3}>                <motion.div
+                  className="backdrop-blur-sm rounded-xl p-5 border border-gray-100 shadow-md"
                   whileHover={{ y: -5 }}
                 >
                   <p className="text-lg text-gray-700">
@@ -112,9 +107,8 @@ const AboutSection: React.FC = () => {
                 </motion.div>
               </SlideIn>
               
-              <SlideIn direction="left" delay={0.4}>
-                <motion.div
-                  className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-100 shadow-md"
+              <SlideIn direction="left" delay={0.4}>                <motion.div
+                  className="backdrop-blur-sm rounded-xl p-5 border border-blue-100 shadow-md"
                   whileHover={{ y: -5 }}
                 >
                   <p className="text-lg text-gray-700">
@@ -143,7 +137,7 @@ const AboutSection: React.FC = () => {
               <motion.a 
                 href="/CV_OtmanMouhib.pdf" 
                 download 
-                className="group bg-white border-2 border-gray-200 hover:border-blue-400 text-center px-6 py-3 rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm"
+                className="border-2 border-gray-200 hover:border-blue-400 text-center px-6 py-3 rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm"
                 whileHover={{ 
                   scale: 1.03, 
                   boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1)"

@@ -27,7 +27,7 @@ const WorkSection: React.FC = () => {
           {uiData.work.categories.map((category, index) => {
             const colors = getColorClasses(category.color);
             return (
-              <div key={index} className={`bg-gradient-to-br ${colors.bg} p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1`}>
+              <div key={index} className={`backdrop-blur-sm p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1`}>
                 <div className={`text-4xl mb-4 ${colors.card} w-16 h-16 rounded-lg flex items-center justify-center ${colors.text} mx-auto md:mx-0`}>{category.icon}</div>
                 <h3 className="text-xl font-semibold mb-3 text-center md:text-left">{category.name}</h3>
                 <p className="text-gray-700 mb-4 text-center md:text-left">

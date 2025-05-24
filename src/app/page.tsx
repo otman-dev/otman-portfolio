@@ -117,23 +117,9 @@ export default function Home() {
         clearTimeout(scrollTimeout);
       }
     };
-  }, []);
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 text-gray-800 overflow-hidden">
-      {/* Chat Component */}
+  }, []);  return (
+    <div className="min-h-screen text-gray-800 overflow-hidden">      {/* Chat Component */}
       <ChatComponent />
-      
-      {/* Background Design Elements */}
-      <div className="fixed inset-0 -z-10 opacity-5">
-        <div className="absolute top-20 left-1/4 w-40 h-40 rounded-full bg-blue-300 mix-blend-multiply filter blur-xl animate-float"></div>
-        <div className="absolute top-40 right-1/4 w-60 h-60 rounded-full bg-purple-300 mix-blend-multiply filter blur-xl animate-float-delay"></div>
-        <div className="absolute bottom-40 left-1/3 w-40 h-40 rounded-full bg-cyan-300 mix-blend-multiply filter blur-xl animate-float-slow"></div>
-        <div className="absolute bottom-60 right-1/4 w-32 h-32 rounded-full bg-green-300 mix-blend-multiply filter blur-xl animate-float"></div>
-        <div className="absolute top-1/4 left-1/2 w-24 h-24 rounded-full bg-yellow-300 opacity-30 mix-blend-multiply filter blur-xl animate-float-slow"></div>
-        <div className="absolute bottom-1/3 right-1/3 w-36 h-36 rounded-full bg-gradient-to-br from-indigo-300 to-purple-300 mix-blend-multiply filter blur-xl animate-float"></div>
-        <div className="absolute top-2/3 left-1/5 w-28 h-28 rounded-full bg-gradient-to-tr from-blue-200 to-cyan-200 mix-blend-multiply filter blur-xl animate-float-delay"></div>
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMyMDIwMjAiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djJoLTJ2LTJoMnptMC00aDJ2MmgtMnYtMnptLTQgMHYyaC0ydi0yaDJ6bTIgMGgydjJoLTJ2LTJ6bS0yLTRoMnYyaC0ydi0yem00IDBoMnYyaC0ydi0yek0zNCAxOHYyaC0ydi0yaDJ6bTAgNGgydjJoLTJ2LTJ6bS00LTRoMnYyaC0ydi0yem0wIDRoMnYyaC0ydi0yek0yNiAzNnYtMmgydjJoLTJ6bS0yLTR2LTJoMnYyaC0yem0wIDBoMnYyaC0ydi0yek0yNCAyMGgydjJoLTJ2LTJ6bTItOHY2aC02VjEyaDZ6bS02IDEyaDZ2LTZoLTZ2NnptLTIgOGg2di02aC02djZ6bS02LTRoNnYtNmgtNnY2em0wIDRoNnYtNmgtNnY2eiIvPjwvZz48L2c+PC9zdmc+')] opacity-30"></div>
-      </div>
       
       {/* Floating Navigation Component */}
       <FloatingNavigation 

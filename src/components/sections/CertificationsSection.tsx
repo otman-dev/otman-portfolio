@@ -81,7 +81,7 @@ const CertificationsSection: React.FC = () => {
           {displayCertifications.map((certification, index) => (
             <div 
               key={index} 
-              className={`flex flex-col bg-gradient-to-r ${getColorClass(certification.issuer)} px-4 py-4 rounded-xl hover:shadow-md transition-all duration-300 transform hover:-translate-y-1`}
+              className={`flex flex-col backdrop-blur-sm border ${certification.issuer.toLowerCase().includes('ibm') ? 'border-blue-100' : certification.issuer.toLowerCase().includes('mongodb') ? 'border-green-100' : certification.issuer.toLowerCase().includes('nokia') ? 'border-yellow-100' : certification.issuer.toLowerCase().includes('pypi') ? 'border-orange-100' : 'border-purple-100'} px-4 py-4 rounded-xl hover:shadow-md transition-all duration-300 transform hover:-translate-y-1`}
             >
               <div className="flex items-start mb-2">
                 {getIconForIssuer(certification.issuer)}

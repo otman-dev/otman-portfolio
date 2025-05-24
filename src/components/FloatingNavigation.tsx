@@ -105,15 +105,14 @@ const FloatingNavigation = ({ activeLink, setActiveLink }: FloatingNavigationPro
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.3 }}
-    >{/* Subtle indicator line at top of navigation */}
-      <motion.div 
-        className="h-1 bg-gradient-to-r from-transparent via-blue-400/30 to-transparent rounded-full mb-2 pointer-events-none animate-nav-indicator"
+    >{/* Subtle indicator line at top of navigation */}      <motion.div 
+        className="h-1 bg-gradient-to-r from-transparent via-blue-500/40 to-transparent rounded-full mb-2 pointer-events-none animate-nav-indicator"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
       />
       <div className="w-full max-w-lg md:max-w-xl mx-auto pointer-events-auto">        <motion.nav 
-          className="bg-white/95 backdrop-blur-md rounded-full shadow-lg border border-gray-200/50 py-3 px-2 sm:px-4 flex justify-around items-center"
+          className="bg-neutral-800/80 backdrop-blur-md rounded-full shadow-lg border border-neutral-700 py-3 px-2 sm:px-4 flex justify-around items-center"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ 
@@ -139,9 +138,8 @@ const FloatingNavigation = ({ activeLink, setActiveLink }: FloatingNavigationPro
                 // Handle touch end event for better mobile performance
                 e.preventDefault();
                 handleNavClick(e, item.id);
-              }}
-              className={`relative group flex flex-col items-center justify-center p-3 md:p-2 transition-all duration-300 focus-visible ${
-                activeLink === item.id ? 'text-blue-600 scale-105' : 'text-gray-500 hover:text-blue-500 hover:scale-105'
+              }}              className={`relative group flex flex-col items-center justify-center p-3 md:p-2 transition-all duration-300 focus-visible ${
+                activeLink === item.id ? 'text-blue-400 scale-105' : 'text-gray-300 hover:text-blue-300 hover:scale-105'
               }`}
               aria-label={`Navigate to ${item.label} section`}
               aria-current={activeLink === item.id ? 'page' : undefined}
@@ -165,10 +163,9 @@ const FloatingNavigation = ({ activeLink, setActiveLink }: FloatingNavigationPro
                   {item.icon}
                 </motion.div>
                 
-                {/* Active indicator */}
-                {activeLink === item.id && (
+                {/* Active indicator */}                {activeLink === item.id && (
                   <motion.div
-                    className="absolute -inset-2.5 rounded-full bg-blue-100/70"
+                    className="absolute -inset-2.5 rounded-full bg-blue-900/60"
                     layoutId="activeSection"
                     transition={{
                       type: "spring",

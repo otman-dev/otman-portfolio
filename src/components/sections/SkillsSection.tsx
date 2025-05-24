@@ -14,7 +14,7 @@ const SkillsSection: React.FC = () => {
         <h2 className="text-2xl md:text-3xl font-semibold mb-8 md:mb-12 inline-block border-b-2 border-blue-500 pb-1 text-center">Technical Skills</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full max-w-6xl mx-auto">
           {/* Languages */}
-          <div className="bg-gradient-to-br from-white to-blue-50 p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+          <div className="backdrop-blur-sm p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
             <h3 className="font-semibold mb-4 text-gray-800 flex items-center justify-center md:justify-start">
               <span className="bg-blue-100 text-blue-600 p-3 rounded-lg mr-3">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
@@ -33,7 +33,7 @@ const SkillsSection: React.FC = () => {
           </div>
 
           {/* Web Development */}
-          <div className="bg-gradient-to-br from-white to-purple-50 p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+          <div className="backdrop-blur-sm p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
             <h3 className="font-semibold mb-4 text-gray-800 flex items-center justify-center md:justify-start">
               <span className="bg-purple-100 text-purple-600 p-3 rounded-lg mr-3">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
@@ -52,7 +52,7 @@ const SkillsSection: React.FC = () => {
           </div>
 
           {/* Data Engineering */}
-          <div className="bg-gradient-to-br from-white to-green-50 p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+          <div className="backdrop-blur-sm p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
             <h3 className="font-semibold mb-4 text-gray-800 flex items-center justify-center md:justify-start">
               <span className="bg-green-100 text-green-600 p-3 rounded-lg mr-3">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
@@ -76,10 +76,8 @@ const SkillsSection: React.FC = () => {
                 </li>
               ))}
             </ul>
-          </div>
-
-          {/* IoT & Embedded */}
-          <div className="bg-gradient-to-br from-white to-red-50 p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+          </div>          {/* IoT & Embedded */}
+          <div className="backdrop-blur-sm p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
             <h3 className="font-semibold mb-4 text-gray-800 flex items-center justify-center md:justify-start">
               <span className="bg-red-100 text-red-600 p-3 rounded-lg mr-3">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
@@ -110,10 +108,8 @@ const SkillsSection: React.FC = () => {
                 PCB Design
               </li>
             </ul>
-          </div>
-
-          {/* Machine Learning */}
-          <div className="bg-gradient-to-br from-white to-indigo-50 p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+          </div>          {/* Machine Learning */}
+          <div className="backdrop-blur-sm p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
             <h3 className="font-semibold mb-4 text-gray-800 flex items-center justify-center md:justify-start">
               <span className="bg-indigo-100 text-indigo-600 p-3 rounded-lg mr-3">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
@@ -128,10 +124,8 @@ const SkillsSection: React.FC = () => {
                   {skill}
                 </li>
               ))}
-            </ul>          </div>
-
-          {/* IoT & Embedded */}
-          <div className="bg-gradient-to-br from-white to-red-50 p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+            </ul>          </div>          {/* IoT & Embedded */}
+          <div className="backdrop-blur-sm p-5 md:p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
             <h3 className="font-semibold mb-4 text-gray-800 flex items-center justify-center md:justify-start">
               <span className="bg-red-100 text-red-600 p-3 rounded-lg mr-3">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
@@ -148,10 +142,8 @@ const SkillsSection: React.FC = () => {
                 </li>
               ))}
             </ul>
-          </div>
-
-          {/* Tools & Platforms */}
-          <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+          </div>          {/* Tools & Platforms */}
+          <div className="backdrop-blur-sm p-4 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
             <h3 className="font-semibold mb-3 text-gray-800 flex items-center">
               <span className="bg-yellow-100 text-yellow-600 p-2 rounded-md mr-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

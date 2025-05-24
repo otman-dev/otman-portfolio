@@ -166,7 +166,7 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-24 right-6 z-40 w-80 sm:w-96 md:w-[32rem] lg:w-[36rem] max-h-[70vh] bg-white rounded-xl shadow-xl flex flex-col border border-gray-100 overflow-hidden"
+            className="fixed bottom-24 right-6 z-40 w-80 sm:w-96 md:w-[32rem] lg:w-[36rem] max-h-[70vh] backdrop-blur-md border border-gray-100 rounded-xl shadow-xl flex flex-col overflow-hidden"
             style={{ boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
           >
             {/* Chat header */}
