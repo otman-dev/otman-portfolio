@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion, useSpring, useTransform, useScroll } from "framer-motion";
 import { SlideIn, FadeIn, ScaleIn } from "@/components/animations";
 import React, { useRef, useState, useEffect } from "react";
+import { portfolioData } from "@/utils/portfolioKnowledgeBase";
 
 interface HeroSectionProps {
   setActiveLink: (link: string) => void;
@@ -186,9 +187,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ setActiveLink }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="inline-block mb-6"
-          >
-            <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-[length:200%_100%] animate-shimmer text-white rounded-full px-6 py-2 text-sm font-medium shadow-lg shadow-blue-500/20">
-              Welcome to my digital space
+          >            <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-[length:200%_100%] animate-shimmer text-white rounded-full px-6 py-2 text-sm font-medium shadow-lg shadow-blue-500/20">
+              {portfolioData.ui.hero.welcomeBadge}
             </div>
           </motion.div>
           
@@ -201,28 +201,26 @@ const HeroSection: React.FC<HeroSectionProps> = ({ setActiveLink }) => {
               transformStyle: "preserve-3d",
               transform: `perspective(1000px) rotateX(${mouseY * 2}deg) rotateY(${-mouseX * 2}deg)`
             }}
-          >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
-              Transforming Ideas into 
+          >            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
+              {portfolioData.ui.hero.mainHeading.split(' ').slice(0, 3).join(' ')} 
               <span className="relative block mt-2">
                 {/* Animated underline effect */}
                 <span className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></span>
                 {/* Text with gradient and clip path animation */}
                 <span className="bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 bg-clip-text text-transparent relative inline-block">
-                  Digital Reality
+                  {portfolioData.ui.hero.mainHeading.split(' ').slice(3).join(' ')}
                 </span>
               </span>
             </h1>
           </motion.div>
-          
-          {/* Description paragraph */}
+            {/* Description paragraph */}
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
             className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto lg:mx-0 mb-8"
           >
-            I create intelligent systems where hardware meets software, and innovation meets implementation.
+            {portfolioData.ui.hero.description}
           </motion.p>
           
           {/* CTA buttons */}
@@ -242,10 +240,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ setActiveLink }) => {
                 document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
                 setActiveLink('work');
               }}
-            >
-              {/* Button hover shine effect */}
+            >              {/* Button hover shine effect */}
               <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white to-transparent -translate-x-full group-hover:translate-x-full transition-all duration-700 opacity-30"></span>
-              Explore My Work
+              {portfolioData.ui.hero.ctaButtons.primary}
             </motion.a>
             
             <motion.a 
@@ -258,10 +255,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ setActiveLink }) => {
                 document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                 setActiveLink('contact');
               }}
-            >
-              {/* Button hover background effect */}
+            >              {/* Button hover background effect */}
               <span className="absolute inset-0 w-full h-full bg-blue-50 -translate-y-full group-hover:translate-y-0 transition-all duration-300"></span>
-              <span className="relative">Get in Touch</span>
+              <span className="relative">{portfolioData.ui.hero.ctaButtons.secondary}</span>
             </motion.a>
           </motion.div>
         </motion.div>
