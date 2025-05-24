@@ -32,8 +32,7 @@
   --highlight-400: #34d399;
   --highlight-500: #10b981;
   --highlight-600: #059669;
-  
-  /* Neutral */
+    /* Neutral */
   --neutral-50: #fafafa;
   --neutral-100: #f5f5f5;
   --neutral-200: #e5e5e5;
@@ -45,8 +44,13 @@
   --neutral-800: #262626;
   --neutral-900: #171717;
   --neutral-950: #0a0a0a;
+  
+  /* Dark blue background palette */
+  --bg-dark-blue-900: #0f172a;  /* Very dark blue, close to black */
+  --bg-dark-blue-950: #0c1220;  /* Even darker blue */
+  
     /* Base colors */
-  --background: var(--neutral-900);
+  --background: var(--bg-dark-blue-900);
   --foreground: var(--neutral-50);
   --primary: var(--brand-500);
   --primary-hover: var(--brand-600);
