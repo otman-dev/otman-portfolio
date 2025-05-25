@@ -7,9 +7,12 @@ import {
   HeroSection,
   AboutSection,
   WorkSection,
+  ProjectsSection,
   ExperienceSection,
+  EducationSection,
   SkillsSection,
   CertificationsSection,
+  CompetitionsSection,
   LanguagesSection,
   PersonalStatementSection,
   BlogSection,
@@ -31,7 +34,7 @@ export default function Home() {
       
       // Set a small timeout to debounce scroll events
       scrollTimeout = setTimeout(() => {        // Determine which section is active for nav highlighting
-        const sections = ['home', 'about', 'work', 'experience', 'skills', 'certifications', 'languages', 'statement', 'blog', 'contact'];
+        const sections = ['home', 'about', 'work', 'projects', 'experience', 'skills', 'certifications', 'competitions', 'education', 'languages', 'statement', 'blog', 'contact'];
         let currentSection = '';
         
         // Set home as active when at the top
@@ -131,22 +134,27 @@ export default function Home() {
         <HeroSection setActiveLink={setActiveLink} />
 
         {/* About Section */}
-        <AboutSection />
-
-        {/* What I Build Section */}
+        <AboutSection />        {/* What I Build Section */}
         <WorkSection />
+
+        {/* Featured Projects Section */}
+        <ProjectsSection />
 
         {/* Experience Overview Section */}
         <ExperienceSection />
 
-        {/* Technical Skills Section */}
-        <SkillsSection />
+       
 
-        {/* Certifications Section */}
+        {/* Technical Skills Section */}
+        <SkillsSection />{/* Certifications Section */}
         <CertificationsSection />
 
+        {/* Competitions & Awards Section */}
+        <CompetitionsSection />
+         {/* Education Section */}
+        <EducationSection />
         {/* Languages & Extras Section */}
-        <LanguagesSection />        {/* Personal Statement Section */}
+        <LanguagesSection />{/* Personal Statement Section */}
         <PersonalStatementSection />
 
         {/* Blog Section */}

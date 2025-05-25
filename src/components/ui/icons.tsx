@@ -24,8 +24,11 @@ import {
   FiLayers,
   FiServer,
   FiGlobe,
-  FiEdit3
+  FiEdit3,
+  FiBookOpen,
+  FiTarget
 } from 'react-icons/fi'
+import { SiMedium, SiGitlab } from 'react-icons/si'
 
 // Icon system with consistent styling
 interface IconProps {
@@ -57,8 +60,10 @@ const iconMap: Record<string, IconType> = {
   cloud: FiCloud,
   layers: FiLayers,
   server: FiServer,
-  globe: FiGlobe,
-  blog: FiEdit3,
+  globe: FiGlobe,  blog: FiEdit3,  book: FiBookOpen,
+  medium: SiMedium,
+  gitlab: SiGitlab,
+  target: FiTarget,
 }
 
 // Consistent icon component
@@ -127,6 +132,8 @@ export const Icons = {
   Cloud: (props: Omit<IconProps, 'name'>) => <Icon name="cloud" {...props} />,
   Layers: (props: Omit<IconProps, 'name'>) => <Icon name="layers" {...props} />,
   Server: (props: Omit<IconProps, 'name'>) => <Icon name="server" {...props} />,
-  Globe: (props: Omit<IconProps, 'name'>) => <Icon name="globe" {...props} />,
-  Blog: (props: Omit<IconProps, 'name'>) => <Icon name="blog" {...props} />,
+  Globe: (props: Omit<IconProps, 'name'>) => <Icon name="globe" {...props} />,  Blog: (props: Omit<IconProps, 'name'>) => <Icon name="blog" {...props} />,  Book: (props: Omit<IconProps, 'name'>) => <Icon name="book" {...props} />,
+  Medium: (props: Omit<IconProps, 'name'>) => <Icon name="medium" {...props} />,
+  GitLab: (props: Omit<IconProps, 'name'>) => <Icon name="gitlab" {...props} />,
+  Target: (props: Omit<IconProps, 'name'>) => <Icon name="target" {...props} />,
 }

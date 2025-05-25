@@ -73,8 +73,7 @@ const ContactFooterSection: React.FC = () => {
       </div>
 
       <div className="max-w-6xl mx-auto w-full">
-        
-        {/* Header Section */}
+          {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -85,10 +84,62 @@ const ContactFooterSection: React.FC = () => {
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Let's <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Connect</span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-8">
             Ready to bring your next project to life? I'm always excited to discuss new opportunities 
             and innovative ideas. Let's create something amazing together!
           </p>
+            {/* Social Media Icons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex items-center justify-center gap-6"
+          >
+            <motion.a
+              href="https://github.com/otman-dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-center w-12 h-12 bg-gray-800/50 hover:bg-gray-700/70 border border-gray-700 hover:border-gray-600 rounded-xl transition-all duration-300"
+              whileHover={{ scale: 1.1, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Icons.GitHub className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
+            </motion.a>
+            
+            <motion.a
+              href="https://gitlab.univ-nantes.fr/mouhib-o"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-center w-12 h-12 bg-gray-800/50 hover:bg-orange-600/20 border border-gray-700 hover:border-orange-500/50 rounded-xl transition-all duration-300"
+              whileHover={{ scale: 1.1, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Icons.GitLab className="w-5 h-5 text-gray-400 group-hover:text-orange-400 transition-colors" />
+            </motion.a>
+            
+            <motion.a
+              href="https://linkedin.com/in/otmanmouhib"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-center w-12 h-12 bg-gray-800/50 hover:bg-blue-600/20 border border-gray-700 hover:border-blue-500/50 rounded-xl transition-all duration-300"
+              whileHover={{ scale: 1.1, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Icons.LinkedIn className="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" />
+            </motion.a>
+            
+            <motion.a
+              href="https://medium.com/@mouhib.otm"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-center w-12 h-12 bg-gray-800/50 hover:bg-gray-600/20 border border-gray-700 hover:border-gray-500/50 rounded-xl transition-all duration-300"
+              whileHover={{ scale: 1.1, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Icons.Medium className="w-5 h-5 text-gray-400 group-hover:text-gray-300 transition-colors" />
+            </motion.a>
+          </motion.div>
         </motion.div>
 
         {/* Contact Cards */}

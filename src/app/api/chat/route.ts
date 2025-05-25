@@ -3,6 +3,10 @@ import { Groq } from 'groq-sdk';
 import { personalData } from '@/utils/data/personal';
 import { experiencesData } from '@/utils/data/experiences';
 import { skillsData } from '@/utils/data/skills';
+import { certificationsData } from '@/utils/data/certifications';
+import { competitionsData } from '@/utils/data/competitions';
+import { educationData } from '@/utils/data/education';
+import { projectsData } from '@/utils/data/projects';
 
 export async function POST(req: NextRequest) {
   try {
@@ -35,29 +39,42 @@ export async function POST(req: NextRequest) {
     - Title: ${personalData.title}
     - Location: Morocco/France
     - Bio: ${personalData.bio}
+    - Email: ${personalData.email}
+    - LinkedIn: ${personalData.linkedin}
+    - GitHub: ${personalData.github}
+    
+    EDUCATION:
+    ${educationData.map((edu: any) => `- ${edu.degree} in ${edu.field} at ${edu.institution} (${edu.duration})`).join('\n')}
     
     EXPERIENCE SUMMARY: ${experiencesData.length} positions
     Recent roles include:
-    ${experiencesData.slice(0, 3).map((exp: any) => `- ${exp.title} at ${exp.company} (${exp.duration})`).join('\n')}
+    ${experiencesData.slice(0, 3).map((exp: any) => `- ${exp.title} at ${exp.company} (${exp.duration}): ${exp.description}`).join('\n')}
     
-    KEY ACHIEVEMENTS:
-    - National Robotics Champion (2021)
-    - Top 3 in international AI competition (50+ teams, 2024)
-    - Published Python package 'atar' on PyPI
-    - Multiple successful AI and IoT deployments
+    KEY PROJECTS:
+    ${projectsData.slice(0, 4).map((project: any) => `- ${project.title}: ${project.description} (${project.technologies.slice(0, 3).join(', ')})`).join('\n')}
     
-    TECHNICAL EXPERTISE:
-    - AI/ML: ${skillsData.aiMl.slice(0, 5).join(', ')}
-    - Programming: ${skillsData.programming.slice(0, 5).join(', ')}
-    - Embedded: ${skillsData.embedded.slice(0, 5).join(', ')}
+    CERTIFICATIONS:
+    ${certificationsData.map((cert: any) => `- ${cert.title} by ${cert.issuer} (${cert.year})`).join('\n')}
+    
+    COMPETITIONS & AWARDS:
+    ${competitionsData.map((comp: any) => `- ${comp.title}: ${comp.achievement} (${comp.year})`).join('\n')}
+      TECHNICAL EXPERTISE:
+    - AI/ML: ${skillsData.aiMl.slice(0, 6).join(', ')}
+    - Programming: ${skillsData.programming.slice(0, 6).join(', ')}
+    - Embedded Systems: ${skillsData.embedded.slice(0, 4).join(', ')}
+    - Cloud & Tools: ${skillsData.cloud.slice(0, 3).join(', ')}, ${skillsData.tools.slice(0, 3).join(', ')}
+    - Frameworks: ${skillsData.frameworks.slice(0, 5).join(', ')}
     - Specializations: ${skillsData.specializations.join(', ')}
+      LANGUAGES:
+    ${skillsData.languages.join(', ')}
     
     RESPONSE GUIDELINES:
     - Keep responses brief (1-3 sentences) unless details are requested
     - Use bullet points for lists
     - Be professional and friendly
     - Only discuss ${personalData.name}'s portfolio content
-    - Provide titles and brief descriptions, let users ask for more details
+    - Provide specific examples from projects, experiences, and achievements
+    - Mention relevant technologies and skills when discussing projects
     `;
 
     // Add the context as a system message

@@ -46,6 +46,16 @@ export interface Certification {
   description?: string;
 }
 
+export interface Competition {
+  id: string;
+  title: string;
+  organization: string;
+  date: string;
+  type: 'robotics' | 'hackathon' | 'communication' | 'programming';
+  achievement: string;
+  description: string;
+}
+
 export interface SkillCategory {
   name: string;
   icon: string;
