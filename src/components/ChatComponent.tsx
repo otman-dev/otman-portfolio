@@ -47,11 +47,16 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
       role: 'assistant',
       content: 'Hi there! 👋 I\'m your friendly assistant on Otman\'s portfolio. Feel free to ask me anything about his skills, projects, or experience. How can I help you today?'
     }
-  ]);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  ]);  const [input, setInput] = useState('');  const [isLoading, setIsLoading] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isProcessingAudio, setIsProcessingAudio] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [autoSpeak, setAutoSpeak] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const speechSynthRef = useRef<SpeechSynthesisUtterance | null>(null);
 
   // Scroll to bottom of messages
   const scrollToBottom = () => {
@@ -83,13 +88,34 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
 
     return () => clearTimeout(timer);
   }, []);
-
   // Hide label when chat is opened
   useEffect(() => {
     if (isOpen) {
       setShowLabel(false);
     }
   }, [isOpen]);
+
+  // Cleanup speech synthesis on unmount
+  useEffect(() => {
+    return () => {
+      if (speechSynthesis.speaking) {
+        speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  // Load voices when available
+  useEffect(() => {
+    const loadVoices = () => {
+      speechSynthesis.getVoices();
+    };
+    
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = loadVoices;
+    }
+    
+    loadVoices();
+  }, []);
     // Scroll to bottom functionality is handled above
 
   // Send message to API
@@ -122,21 +148,161 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
         throw new Error('Failed to get response');
       }
 
-      const data = await response.json();
-      
-      // Add assistant response to chat
+      const data = await response.json();      // Add assistant response to chat
+      const assistantMessage = { role: 'assistant' as const, content: data.content };
       setMessages(prev => [
         ...prev,
-        { role: 'assistant', content: data.content }
+        assistantMessage
       ]);
+
+      // Auto-speak the response if enabled
+      if (autoSpeak) {
+        speakText(data.content);
+      }
     } catch (error) {
       console.error('Error:', error);
       setMessages(prev => [
         ...prev,
         { role: 'assistant', content: 'Sorry, I encountered an error. Please try again later.' }
       ]);
+    } finally {      setIsLoading(false);
+    }
+  };
+  // Text-to-speech functions
+  const speakText = (text: string) => {
+    // Stop any current speech
+    stopSpeaking();
+    
+    // Clean text for better speech synthesis (remove markdown)
+    const cleanText = text
+      .replace(/\*\*(.*?)\*\*/g, '$1') // Bold text
+      .replace(/\*(.*?)\*/g, '$1')     // Italic text
+      .replace(/`(.*?)`/g, '$1')       // Code text
+      .replace(/#{1,6}\s/g, '')        // Headers
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Links
+      .replace(/\n\s*[-*]\s/g, '. ')   // List items
+      .trim();
+
+    if ('speechSynthesis' in window && cleanText) {
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      speechSynthRef.current = utterance;
+      
+      // Configure voice settings
+      utterance.rate = 0.9;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+      
+      // Try to use a more natural voice
+      const voices = speechSynthesis.getVoices();
+      const preferredVoice = voices.find(voice => 
+        voice.lang.startsWith('en') && 
+        (voice.name.includes('Neural') || voice.name.includes('Premium') || voice.name.includes('Enhanced'))
+      ) || voices.find(voice => voice.lang.startsWith('en'));
+      
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      }
+
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => {
+        setIsSpeaking(false);
+        speechSynthRef.current = null;
+      };
+      utterance.onerror = () => {
+        setIsSpeaking(false);
+        speechSynthRef.current = null;
+      };
+
+      speechSynthesis.speak(utterance);
+    }
+  };
+
+  const stopSpeaking = () => {
+    if (speechSynthesis.speaking) {
+      speechSynthesis.cancel();
+    }
+    setIsSpeaking(false);
+    speechSynthRef.current = null;
+  };
+
+  const toggleAutoSpeak = () => {
+    setAutoSpeak(prev => !prev);
+    if (isSpeaking) {
+      stopSpeaking();
+    }
+  };
+
+  // Speech-to-text functions
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: 'audio/webm;codecs=opus'
+      });
+
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data);
+      };
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm;codecs=opus' });
+        await sendAudioToAPI(audioBlob);
+        
+        // Stop all tracks to release the microphone
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+    } catch (error) {
+      console.error('Error starting recording:', error);
+      // Add a user-friendly message
+      setMessages(prev => [
+        ...prev,
+        { role: 'assistant', content: 'Could not access microphone. Please check your browser permissions and try again.' }
+      ]);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const sendAudioToAPI = async (audioBlob: Blob) => {
+    setIsProcessingAudio(true);
+    
+    try {
+      const formData = new FormData();
+      formData.append('audio', audioBlob, 'recording.webm');
+
+      const response = await fetch('/api/chat/speech', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to process audio');
+      }
+
+      const result = await response.json();
+      
+      // Set the transcribed text in the input field
+      setInput(result.text);
+      
+    } catch (error) {
+      console.error('Error processing audio:', error);
+      setMessages(prev => [
+        ...prev,
+        { role: 'assistant', content: 'Error processing audio. Please try again or type your message.' }
+      ]);
     } finally {
-      setIsLoading(false);
+      setIsProcessingAudio(false);
     }
   };
   return (
@@ -200,16 +366,48 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
                 </svg>
                 Chat Assistant
               </h3>
-              <button 
-                onClick={() => setIsOpen(false)}
-                className="p-1.5 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-            </div>            {/* Chat messages */}
+              <div className="flex items-center gap-2">
+                {/* Auto-speak toggle */}
+                <button
+                  onClick={toggleAutoSpeak}
+                  className={`p-1.5 rounded-full transition-colors ${
+                    autoSpeak 
+                      ? 'text-blue-400 bg-blue-400/20 hover:bg-blue-400/30' 
+                      : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                  }`}
+                  title={autoSpeak ? "Disable auto-speak" : "Enable auto-speak"}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                  </svg>
+                </button>
+                
+                {/* Stop speaking button (only show when speaking) */}
+                {isSpeaking && (
+                  <button
+                    onClick={stopSpeaking}
+                    className="p-1.5 rounded-full text-red-400 bg-red-400/20 hover:bg-red-400/30 transition-colors"
+                    title="Stop speaking"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                      <rect x="6" y="6" width="12" height="12" rx="2"/>
+                    </svg>
+                  </button>
+                )}
+                
+                <button 
+                  onClick={() => setIsOpen(false)}
+                  className="p-1.5 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>{/* Chat messages */}
             <div className="flex-1 px-5 py-4 overflow-y-auto bg-gray-900/30">
               {/* FAQ suggestion buttons - show only when first opened and no user messages */}
               {messages.filter(m => m.role === 'user').length === 0 && (
@@ -261,8 +459,7 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
                         >
                           {message.content}
                         </ReactMarkdown>
-                      </div>                    ) : (
-                      <ReactMarkdown
+                      </div>                    ) : (                      <ReactMarkdown
                         components={{
                           p: ({node, ...props}) => <p className="mb-1 leading-relaxed" {...props} />,
                           strong: ({node, ...props}) => <span className="font-bold" {...props} />
@@ -272,8 +469,32 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
                       </ReactMarkdown>
                     )}
                   </div>
+                  
+                  {/* Speak button for assistant messages */}
+                  {message.role === 'assistant' && (
+                    <div className="flex justify-start mt-1">
+                      <button
+                        onClick={() => speakText(message.content)}
+                        disabled={isSpeaking}
+                        className={`text-xs px-2 py-1 rounded-full transition-colors ${
+                          isSpeaking 
+                            ? 'text-gray-500 cursor-not-allowed' 
+                            : 'text-gray-400 hover:text-blue-400 hover:bg-gray-800/50'
+                        }`}
+                        title="Speak this message"
+                      >
+                        <div className="flex items-center gap-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                          </svg>
+                          <span>Speak</span>
+                        </div>
+                      </button>
+                    </div>
+                  )}
                 </div>
-              ))}              {isLoading && (
+              ))}{isLoading && (
                 <div className="mb-4 text-left">
                   <div className="inline-block p-3 rounded-2xl bg-gray-800/50 text-gray-400 max-w-[80%] border border-gray-700 shadow-sm">
                     <div className="flex items-center space-x-2">
@@ -298,22 +519,61 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
               <div ref={messagesEndRef} />
             </div>            {/* Chat input */}
             <div className="p-4 border-t border-gray-700 bg-gray-800/30">
-              <div className="flex space-x-3">
+              <div className="flex space-x-2">
                 <textarea
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   className="flex-1 py-2.5 px-3.5 border border-gray-700 rounded-full bg-gray-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none shadow-sm"
-                  placeholder="Type a message..."
+                  placeholder={isProcessingAudio ? "Processing audio..." : "Type a message or use voice..."}
                   rows={1}
                   style={{ minHeight: "44px" }}
+                  disabled={isProcessingAudio}
                 />
+                
+                {/* Microphone button */}
+                <button
+                  onClick={isRecording ? stopRecording : startRecording}
+                  disabled={isLoading || isProcessingAudio}
+                  className={`p-3 rounded-full shadow-sm flex items-center justify-center transition-all duration-200 ${
+                    isRecording 
+                      ? 'bg-red-500 text-white hover:bg-red-600 border border-red-500 animate-pulse' 
+                      : isProcessingAudio
+                      ? 'bg-gray-700 text-gray-500 cursor-not-allowed border border-gray-700'
+                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600 hover:text-white'
+                  }`}
+                  aria-label={isRecording ? "Stop recording" : "Start voice recording"}
+                  title={isRecording ? "Stop recording" : "Click to speak"}
+                >
+                  {isProcessingAudio ? (
+                    // Processing spinner
+                    <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  ) : isRecording ? (
+                    // Stop icon
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <rect x="6" y="6" width="12" height="12" rx="2"/>
+                    </svg>
+                  ) : (
+                    // Microphone icon
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                      <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                      <line x1="12" y1="19" x2="12" y2="23"></line>
+                      <line x1="8" y1="23" x2="16" y2="23"></line>
+                    </svg>
+                  )}
+                </button>
+
+                {/* Send button */}
                 <button
                   onClick={handleSend}
-                  disabled={isLoading || !input.trim()}
+                  disabled={isLoading || !input.trim() || isRecording || isProcessingAudio}
                   className={`p-3 rounded-full shadow-sm flex items-center justify-center ${
-                    isLoading || !input.trim() 
+                    isLoading || !input.trim() || isRecording || isProcessingAudio
                       ? 'bg-gray-700 text-gray-500 cursor-not-allowed border border-gray-700' 
                       : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 border border-blue-500 hover:border-blue-400 transition-all duration-200'
                   }`}
@@ -325,6 +585,35 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
                   </svg>
                 </button>
               </div>
+              
+              {/* Recording indicator */}
+              {isRecording && (
+                <div className="flex items-center justify-center mt-2 text-red-400 text-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                    <span>Recording... Click stop when finished</span>
+                  </div>
+                </div>
+              )}
+                {/* Processing indicator */}
+              {isProcessingAudio && (
+                <div className="flex items-center justify-center mt-2 text-blue-400 text-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                    <span>Converting speech to text...</span>
+                  </div>
+                </div>
+              )}
+              
+              {/* Speaking indicator */}
+              {isSpeaking && (
+                <div className="flex items-center justify-center mt-2 text-green-400 text-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span>Speaking response...</span>
+                  </div>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
