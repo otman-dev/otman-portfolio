@@ -26,13 +26,11 @@ const AboutSection: React.FC = () => {  const skills = [
       title: "Data Engineering", 
       description: "Big data processing and analytics pipelines" 
     }
-  ];
-
-  const stats = [
-    { value: "5+", label: "Years Experience" },
-    { value: "50+", label: "Projects Delivered" },
+  ];  const stats = [
+    { value: "50+", label: "GitHub Repositories" },
+    { value: "8+", label: "Programming Languages" },
     { value: "15+", label: "Technologies Mastered" },
-    { value: "100%", label: "Client Satisfaction" }
+    { value: "24/7", label: "Problem Solver" }
   ];
 
   return (
