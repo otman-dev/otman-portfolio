@@ -26,32 +26,27 @@ const EducationSection: React.FC = () => {
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
             A solid foundation in computer science and engineering built through rigorous academic programs
           </p>
-        </motion.div>
-
-        {/* Education Timeline */}
+        </motion.div>        {/* Education Timeline */}
         <div className="relative">
-          {/* Vertical Line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-blue-500 to-purple-500 h-full rounded-full" />
-          
-          {/* Education Items */}
-          <div className="space-y-16">
+          {/* Vertical Line - Hidden on mobile, visible on md+ */}
+          <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-blue-500 to-purple-500 h-full rounded-full" />
+            {/* Education Items */}
+          <div className="space-y-8 md:space-y-16">
             {educationData.map((education, index) => (
               <motion.div 
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                className={`flex items-center ${
+                transition={{ duration: 0.6, delay: index * 0.2 }}                className={`flex items-center ${
                   index % 2 === 0 
                     ? 'md:flex-row-reverse md:text-right' 
                     : 'md:flex-row md:text-left'
                 } flex-col text-center`}
               >
-                {/* Content Card */}
-                <motion.div 
+                {/* Content Card */}                <motion.div 
                   whileHover={{ y: -8, scale: 1.02 }}
-                  className="group relative bg-gray-800/30 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 hover:border-blue-500/30 transition-all duration-300 overflow-hidden md:w-5/12 w-full"
+                  className="group relative bg-gray-800/30 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 hover:border-blue-500/30 transition-all duration-300 overflow-hidden w-full md:w-5/12"
                 >
                   {/* Background gradient on hover */}
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -140,22 +135,20 @@ const EducationSection: React.FC = () => {
                   {/* Decorative elements */}
                   <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-xl group-hover:scale-150 transition-transform duration-500" />
                   <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-gradient-to-tr from-white/3 to-transparent rounded-full blur-lg group-hover:scale-125 transition-transform duration-700" />
-                </motion.div>
-
-                {/* Timeline Node */}
+                </motion.div>                {/* Timeline Node - Hidden on mobile, visible on md+ */}
                 <motion.div 
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.2 + 0.3 }}
-                  className="relative z-10 w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full border-4 border-gray-900 shadow-lg md:mx-8 my-8 md:my-0 flex-shrink-0"
+                  className="relative z-10 w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full border-4 border-gray-900 shadow-lg md:mx-8 my-8 md:my-0 flex-shrink-0 hidden md:block"
                 >
                   {/* Pulsing animation */}
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-ping opacity-20" />
                 </motion.div>
 
-                {/* Spacer for opposite side */}
-                <div className="md:w-5/12 w-full" />
+                {/* Spacer for opposite side - Hidden on mobile, visible on md+ */}
+                <div className="md:w-5/12 w-full hidden md:block" />
               </motion.div>
             ))}
           </div>
