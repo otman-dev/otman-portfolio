@@ -9,8 +9,12 @@ interface Message {
   content: string;
 }
 
-const ChatComponent: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface ChatComponentProps {
+  isChatOpen: boolean;
+  setIsChatOpen: (isOpen: boolean) => void;
+}
+
+const ChatComponent: React.FC<ChatComponentProps> = ({ isChatOpen, setIsChatOpen }) => {
   const [showLabel, setShowLabel] = useState(true);const [messages, setMessages] = useState<Message[]>([
     {
       role: 'system',
@@ -73,12 +77,11 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
-  useEffect(() => {
-    if (isOpen && inputRef.current) {
+  }, [messages]);  useEffect(() => {
+    if (isChatOpen && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [isOpen]);
+  }, [isChatOpen]);
 
   // Hide label after 8 seconds or when chat is opened
   useEffect(() => {
@@ -90,10 +93,10 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
   }, []);
   // Hide label when chat is opened
   useEffect(() => {
-    if (isOpen) {
+    if (isChatOpen) {
       setShowLabel(false);
     }
-  }, [isOpen]);
+  }, [isChatOpen]);
 
   // Cleanup speech synthesis on unmount
   useEffect(() => {
@@ -306,10 +309,10 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
     }
   };
   return (
-    <>      {/* Chat button with label - hidden when chat is open on mobile */}
-      <div className={`fixed bottom-6 right-6 z-40 flex flex-col items-end transition-opacity duration-200 ${isOpen ? 'md:flex hidden' : 'flex'}`}>
+    <>      {/* Chat button with label - hidden when chat is open */}
+      <div className={`fixed bottom-6 right-6 z-40 flex flex-col items-end transition-opacity duration-200 ${isChatOpen ? 'hidden' : 'flex'}`}>
         <AnimatePresence>
-          {!isOpen && showLabel && (
+          {!isChatOpen && showLabel && (
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -320,9 +323,8 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
               Ask me anything!
             </motion.div>
           )}
-        </AnimatePresence>
-        <motion.button
-          onClick={() => setIsOpen(prev => !prev)}
+        </AnimatePresence>        <motion.button
+          onClick={() => setIsChatOpen(!isChatOpen)}
           className="p-4 rounded-full bg-gray-800/90 backdrop-blur-xl text-white shadow-lg border border-gray-700 hover:bg-gray-700/90 hover:border-gray-600 transition-all duration-200"
           style={{ 
             width: "60px", 
@@ -331,9 +333,9 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
           }}
           whileHover={{ scale: 1.05, y: -3 }}
           whileTap={{ scale: 0.95 }}
-          aria-label={isOpen ? "Close chat" : "Open chat"}
+          aria-label={isChatOpen ? "Close chat" : "Open chat"}
         >
-          {isOpen ? (
+          {isChatOpen ? (
             // X icon
             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -351,35 +353,37 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
         </motion.button>
       </div>      {/* Chat panel */}
       <AnimatePresence>
-        {isOpen && (          <motion.div
+        {isChatOpen && (
+          <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed md:bottom-24 md:right-6 inset-0 md:inset-auto z-50 md:z-40 w-full h-full md:w-80 sm:md:w-96 md:md:w-[32rem] lg:md:w-[36rem] md:max-h-[70vh] bg-gray-800/90 backdrop-blur-xl border-0 md:border border-gray-700 md:rounded-xl shadow-2xl flex flex-col overflow-hidden"
+            className="fixed inset-0 z-50 w-full h-full bg-gray-900/95 backdrop-blur-xl border-0 shadow-2xl flex flex-col overflow-hidden"
             style={{ boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)" }}
-          >            {/* Chat header */}
-            <div className="p-4 md:p-4 bg-gradient-to-r from-gray-800/50 to-gray-700/50 border-b border-gray-700 flex items-center justify-between">
-              {/* Mobile: Back button + Title, Desktop: Icon + Title */}
-              <div className="flex items-center gap-3">
-                {/* Mobile back button */}
+          >
+            {/* Chat header */}
+            <div className="p-6 bg-gradient-to-r from-gray-800/60 to-gray-700/60 border-b border-gray-600 flex items-center justify-between">
+              {/* Back button + Title for all screen sizes */}
+              <div className="flex items-center gap-4">
+                {/* Back button - visible on all screens */}
                 <button 
-                  onClick={() => setIsOpen(false)}
-                  className="md:hidden p-1.5 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
-                  aria-label="Go back"
+                  onClick={() => setIsChatOpen(false)}
+                  className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+                  aria-label="Close chat"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M19 12H5"></path>
                     <path d="M12 19l-7-7 7-7"></path>
                   </svg>
                 </button>
                 
-                <h3 className="font-medium text-lg md:text-lg text-white flex items-center gap-2">
-                  {/* Chat icon - hidden on mobile to save space */}
-                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-400 hidden md:block">
+                <h3 className="font-semibold text-xl text-white flex items-center gap-3">
+                  {/* Chat icon */}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-400">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                   </svg>
-                  <span className="text-base md:text-lg">Chat Assistant</span>
+                  <span>Portfolio Assistant</span>
                 </h3>
               </div>
               <div className="flex items-center gap-2">
@@ -410,55 +414,43 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                       <rect x="6" y="6" width="12" height="12" rx="2"/>
                     </svg>
-                  </button>
-                )}
-                  {/* Desktop close button - hidden on mobile */}
-                <button 
-                  onClick={() => setIsOpen(false)}
-                  className="hidden md:block p-1.5 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                  </svg>
-                </button>
+                  </button>                )}
               </div>
-            </div>{/* Chat messages */}
-            <div className="flex-1 px-5 py-4 overflow-y-auto bg-gray-900/30">
-              {/* FAQ suggestion buttons - show only when first opened and no user messages */}
-              {messages.filter(m => m.role === 'user').length === 0 && (
-                <div className="mb-6">
-                  <div className="text-sm font-medium text-gray-300 mb-2.5">Common questions:</div>
-                  <div className="flex flex-wrap gap-2.5">
-                    {[
-                      "Tell me about Otman's background",
-                      "What projects has Otman worked on?",
-                      "What skills does Otman have?",
-                      "How can I contact Otman?"
-                    ].map((faq, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => {
-                          setInput(faq);
-                          setTimeout(() => handleSend(), 100);
-                        }}
-                        className="px-3.5 py-2 bg-gray-800/50 text-sm text-blue-400 border border-gray-700 rounded-full hover:bg-gray-700/50 hover:border-gray-600 transition-colors shadow-sm"
-                      >
-                        {faq}
-                      </button>
-                    ))}
+            </div>            {/* Chat messages */}
+            <div className="flex-1 px-6 md:px-12 lg:px-20 py-6 overflow-y-auto bg-gray-900/20">
+              <div className="max-w-4xl mx-auto">
+                {/* FAQ suggestion buttons - show only when first opened and no user messages */}
+                {messages.filter(m => m.role === 'user').length === 0 && (
+                  <div className="mb-8">
+                    <div className="text-base font-medium text-gray-300 mb-4">Ask me anything about Otman's background:</div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {[
+                        "Tell me about Otman's background",
+                        "What projects has Otman worked on?",
+                        "What skills does Otman have?",
+                        "How can I contact Otman?"
+                      ].map((faq, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => {
+                            setInput(faq);
+                            setTimeout(() => handleSend(), 100);
+                          }}
+                          className="px-4 py-3 bg-gray-800/50 text-sm text-blue-400 border border-gray-700 rounded-xl hover:bg-gray-700/50 hover:border-gray-600 transition-colors shadow-sm text-left"
+                        >
+                          {faq}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
               
-              {messages.filter(m => m.role !== 'system').map((message, index) => (                <div key={index} className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>                  <div 
-                    className={`inline-block p-3 rounded-2xl max-w-[80%] md:max-w-[85%] ${
+              {messages.filter(m => m.role !== 'system').map((message, index) => (                <div key={index} className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>                  <div                    className={`inline-block p-4 rounded-2xl max-w-[85%] lg:max-w-[75%] ${
                       message.role === 'user' 
                         ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white border border-blue-400/50' 
-                        : 'bg-gray-800/50 text-gray-300 border border-gray-700'
-                    }`}
-                    style={{ 
-                      boxShadow: message.role === 'user' ? '0 2px 8px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.2)'
+                        : 'bg-gray-800/60 text-gray-300 border border-gray-600'
+                    }`}                    style={{ 
+                      boxShadow: message.role === 'user' ? '0 4px 12px rgba(0, 0, 0, 0.3)' : '0 4px 12px rgba(0, 0, 0, 0.2)'
                     }}>{message.role === 'assistant' ? (
                       <div className="prose prose-sm max-w-none">
                         <ReactMarkdown 
@@ -531,28 +523,27 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
                     {messages.filter(m => m.role === 'assistant').slice(-1)[0].content.length} characters
                   </span>
                 </div>
-              )}
-              <div ref={messagesEndRef} />
+              )}              <div ref={messagesEndRef} />
+              </div>
             </div>            {/* Chat input */}
-            <div className="p-4 border-t border-gray-700 bg-gray-800/30">
-              <div className="flex space-x-2">
-                <textarea
+            <div className="p-6 md:p-8 border-t border-gray-600 bg-gray-800/40">
+              <div className="max-w-4xl mx-auto">
+                <div className="flex space-x-4">                <textarea
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  className="flex-1 py-2.5 px-3.5 border border-gray-700 rounded-full bg-gray-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none shadow-sm"
+                  className="flex-1 py-3 px-4 border border-gray-600 rounded-2xl bg-gray-800/60 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none shadow-sm text-base"
                   placeholder={isProcessingAudio ? "Processing audio..." : "Type a message or use voice..."}
                   rows={1}
-                  style={{ minHeight: "44px" }}
+                  style={{ minHeight: "48px" }}
                   disabled={isProcessingAudio}
                 />
-                
-                {/* Microphone button */}
+                  {/* Microphone button */}
                 <button
                   onClick={isRecording ? stopRecording : startRecording}
                   disabled={isLoading || isProcessingAudio}
-                  className={`p-3 rounded-full shadow-sm flex items-center justify-center transition-all duration-200 ${
+                  className={`p-3.5 rounded-2xl shadow-sm flex items-center justify-center transition-all duration-200 ${
                     isRecording 
                       ? 'bg-red-500 text-white hover:bg-red-600 border border-red-500 animate-pulse' 
                       : isProcessingAudio
@@ -582,13 +573,11 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
                       <line x1="8" y1="23" x2="16" y2="23"></line>
                     </svg>
                   )}
-                </button>
-
-                {/* Send button */}
+                </button>                {/* Send button */}
                 <button
                   onClick={handleSend}
                   disabled={isLoading || !input.trim() || isRecording || isProcessingAudio}
-                  className={`p-3 rounded-full shadow-sm flex items-center justify-center ${
+                  className={`p-3.5 rounded-2xl shadow-sm flex items-center justify-center ${
                     isLoading || !input.trim() || isRecording || isProcessingAudio
                       ? 'bg-gray-700 text-gray-500 cursor-not-allowed border border-gray-700' 
                       : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 border border-blue-500 hover:border-blue-400 transition-all duration-200'
@@ -620,8 +609,7 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
                   </div>
                 </div>
               )}
-              
-              {/* Speaking indicator */}
+                {/* Speaking indicator */}
               {isSpeaking && (
                 <div className="flex items-center justify-center mt-2 text-green-400 text-sm">
                   <div className="flex items-center gap-2">
@@ -630,6 +618,7 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
                   </div>
                 </div>
               )}
+              </div>
             </div>
           </motion.div>
         )}

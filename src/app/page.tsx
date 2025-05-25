@@ -21,6 +21,7 @@ import {
 
 export default function Home() {
   const [activeLink, setActiveLink] = useState('');
+  const [isChatOpen, setIsChatOpen] = useState(false);
   
   useEffect(() => {
     // Add a small debounce to scroll events for better performance
@@ -122,12 +123,16 @@ export default function Home() {
     };
   }, []);  return (
     <div className="min-h-screen text-gray-800 overflow-hidden">      {/* Chat Component */}
-      <ChatComponent />
+      <ChatComponent 
+        isChatOpen={isChatOpen}
+        setIsChatOpen={setIsChatOpen}
+      />
       
-      {/* Floating Navigation Component */}
-      <FloatingNavigation 
+      {/* Floating Navigation Component */}      <FloatingNavigation 
         activeLink={activeLink}
-        setActiveLink={setActiveLink}      />
+        setActiveLink={setActiveLink}
+        isChatOpen={isChatOpen}
+      />
 
       <main className="px-4 max-w-7xl mx-auto">
         {/* Welcome Hero Section */}

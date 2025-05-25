@@ -24,9 +24,10 @@ const navItems = [
 interface FloatingNavigationProps {
   activeLink: string;
   setActiveLink: (link: string) => void;
+  isChatOpen: boolean;
 }
 
-const FloatingNavigation = ({ activeLink, setActiveLink }: FloatingNavigationProps) => {
+const FloatingNavigation = ({ activeLink, setActiveLink, isChatOpen }: FloatingNavigationProps) => {
   const [isMobile, setIsMobile] = useState(false);
   
   // Handle client-side operations
@@ -85,13 +86,16 @@ const FloatingNavigation = ({ activeLink, setActiveLink }: FloatingNavigationPro
         block: 'center'
       });
     }
-  }, [isMobile, setActiveLink]);
-
-  return (
+  }, [isMobile, setActiveLink]);  return (
     <motion.div
-      className="fixed z-50 bottom-0 left-0 right-0 hidden md:flex flex-col items-center px-4 pb-4 md:pb-6 pointer-events-none"
+      className={`fixed z-50 bottom-0 left-0 right-0 flex-col items-center px-4 pb-4 md:pb-6 pointer-events-none transition-opacity duration-300 ${
+        isChatOpen ? 'hidden' : 'hidden md:flex'
+      }`}
       initial={{ y: 100 }}
-      animate={{ y: 0 }}
+      animate={{ 
+        y: isChatOpen ? 100 : 0,
+        opacity: isChatOpen ? 0 : 1 
+      }}
       transition={{ duration: 0.3 }}
     >
       <div className="w-full max-w-lg md:max-w-xl mx-auto pointer-events-auto">
