@@ -39,6 +39,28 @@ export const metadata: Metadata = {
     shortcut: "/LogoMouhibOtman(1).svg",
     apple: "/LogoMouhibOtman(1).svg",
   },
+  openGraph: {
+    title: "Otman Mouhib | Computer Engineer",
+    description: "Portfolio of Otman Mouhib - Computer Engineer specializing in AI, IoT, Full-Stack Development and Data Engineering",
+    url: "https://otman-portfolio.vercel.app",
+    siteName: "Otman Mouhib Portfolio",
+    images: [
+      {
+        url: "/LogoMouhibOtman(1).svg",
+        width: 1200,
+        height: 630,
+        alt: "Otman Mouhib Logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Otman Mouhib | Computer Engineer",
+    description: "Portfolio of Otman Mouhib - Computer Engineer specializing in AI, IoT, Full-Stack Development and Data Engineering",
+    images: ["/LogoMouhibOtman(1).svg"],
+  },
 };
 
 export default function RootLayout({
