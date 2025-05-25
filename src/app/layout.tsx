@@ -34,6 +34,11 @@ export const metadata: Metadata = {
   description: "Portfolio of Otman Mouhib - Computer Engineer specializing in AI, IoT, Full-Stack Development and Data Engineering",
   keywords: ["Computer Engineer", "AI", "IoT", "Full-Stack Development", "Data Engineering", "Portfolio"],
   authors: [{ name: "Otman Mouhib" }],
+  icons: {
+    icon: "/LogoMouhibOtman(1).svg",
+    shortcut: "/LogoMouhibOtman(1).svg",
+    apple: "/LogoMouhibOtman(1).svg",
+  },
 };
 
 export default function RootLayout({
