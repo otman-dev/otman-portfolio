@@ -306,8 +306,8 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
     }
   };
   return (
-    <>      {/* Chat button with label */}
-      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end">
+    <>      {/* Chat button with label - hidden when chat is open on mobile */}
+      <div className={`fixed bottom-6 right-6 z-40 flex flex-col items-end transition-opacity duration-200 ${isOpen ? 'md:flex hidden' : 'flex'}`}>
         <AnimatePresence>
           {!isOpen && showLabel && (
             <motion.div 
@@ -356,16 +356,32 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-24 right-6 z-40 w-80 sm:w-96 md:w-[32rem] lg:w-[36rem] max-h-[70vh] bg-gray-800/90 backdrop-blur-xl border border-gray-700 rounded-xl shadow-2xl flex flex-col overflow-hidden"
+            className="fixed md:bottom-24 md:right-6 inset-0 md:inset-auto z-50 md:z-40 w-full h-full md:w-80 sm:md:w-96 md:md:w-[32rem] lg:md:w-[36rem] md:max-h-[70vh] bg-gray-800/90 backdrop-blur-xl border-0 md:border border-gray-700 md:rounded-xl shadow-2xl flex flex-col overflow-hidden"
             style={{ boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)" }}
           >            {/* Chat header */}
-            <div className="p-4 bg-gradient-to-r from-gray-800/50 to-gray-700/50 border-b border-gray-700 flex items-center justify-between">
-              <h3 className="font-medium text-lg text-white flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-400">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                </svg>
-                Chat Assistant
-              </h3>
+            <div className="p-4 md:p-4 bg-gradient-to-r from-gray-800/50 to-gray-700/50 border-b border-gray-700 flex items-center justify-between">
+              {/* Mobile: Back button + Title, Desktop: Icon + Title */}
+              <div className="flex items-center gap-3">
+                {/* Mobile back button */}
+                <button 
+                  onClick={() => setIsOpen(false)}
+                  className="md:hidden p-1.5 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+                  aria-label="Go back"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M19 12H5"></path>
+                    <path d="M12 19l-7-7 7-7"></path>
+                  </svg>
+                </button>
+                
+                <h3 className="font-medium text-lg md:text-lg text-white flex items-center gap-2">
+                  {/* Chat icon - hidden on mobile to save space */}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-400 hidden md:block">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span className="text-base md:text-lg">Chat Assistant</span>
+                </h3>
+              </div>
               <div className="flex items-center gap-2">
                 {/* Auto-speak toggle */}
                 <button
@@ -396,10 +412,10 @@ Your task is to assist visitors on Mouhib's portfolio website by providing short
                     </svg>
                   </button>
                 )}
-                
+                  {/* Desktop close button - hidden on mobile */}
                 <button 
                   onClick={() => setIsOpen(false)}
-                  className="p-1.5 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+                  className="hidden md:block p-1.5 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
