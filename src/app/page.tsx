@@ -18,6 +18,7 @@ import {
   BlogSection,
   ContactFooterSection
 } from "@/components/sections";
+import { BlogDataInitializer } from "@/components/BlogDataInitializer";
 
 export default function Home() {
   const [activeLink, setActiveLink] = useState('');
@@ -122,7 +123,11 @@ export default function Home() {
       }
     };
   }, []);  return (
-    <div className="min-h-screen text-gray-800 overflow-hidden">      {/* Chat Component */}
+    <div className="min-h-screen text-gray-800 overflow-hidden">
+      {/* Blog Data Initializer */}
+      <BlogDataInitializer />
+      
+      {/* Chat Component */}
       <ChatComponent 
         isChatOpen={isChatOpen}
         setIsChatOpen={setIsChatOpen}

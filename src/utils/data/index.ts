@@ -7,6 +7,7 @@ export { certificationsData } from './certifications';
 export { competitionsData } from './competitions';
 export { educationData } from './education';
 export { uiData } from './ui';
+export { blogData, blogMetadata, blogInsights } from './blog';
 
 // Re-export types
 export * from '../types/portfolio';

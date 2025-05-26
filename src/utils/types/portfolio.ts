@@ -189,6 +189,19 @@ export interface UIContent {
   };
 }
 
+export interface BlogPost {
+  id: string;
+  title: string;
+  publishDate: string;
+  link: string;
+  description: string;
+  content: string;
+  categories: string[];
+  techMentions: string[];
+  summary: string;
+  thumbnail?: string;
+}
+
 export interface PortfolioData {
   personal: PersonalInfo;
   ui: UIContent;
@@ -197,6 +210,7 @@ export interface PortfolioData {
   projects: Project[];
   skills: Skills;
   certifications: Certification[];
+  blogPosts: BlogPost[];
   
   // Helper functions
   getExperiencesByType: (type: string) => Experience[];

@@ -1,25 +1,24 @@
 import { Experience } from '../types/portfolio';
 
-export const experiencesData: Experience[] = [
-  {
+export const experiencesData: Experience[] = [  {
     id: "exp1",
     title: "AI & Embedded Systems Research Engineer – Multicore Performance Modeling",
     company: "LS2N (CNRS)",
     location: "Nantes, France",
     duration: "2025",
     type: "research",
-    description: "Research internship focusing on multicore performance modeling for ARM Cortex-A53 systems",
+    description: "Ongoing research internship at LS2N research center focusing on multicore performance modeling for ARM Cortex-A53 systems. Currently working on research project with paper in development",
     responsibilities: [
-      "Developed Python-based predictive models to estimate instruction throughput and memory interference in ARM Cortex-A53 multicore systems",
-      "Implemented low-level C++ instrumentation using Performance Monitoring Units (PMUs) and perf on Linux for benchmark profiling",
-      "Designed modular testing pipelines for automated instruction-level analysis and system performance benchmarking",
-      "Configured Conda-based environments and dependency isolation for reproducible research workflows",
-      "Integrated results into CI pipelines to enable performance regression checks and anomaly detection",
-      "Contributed to infrastructure monitoring strategies using Python tooling and Linux-native performance counters"
+      "Developing Python-based predictive models to estimate instruction throughput and memory interference in ARM Cortex-A53 multicore systems",
+      "Implementing low-level C++ instrumentation using Performance Monitoring Units (PMUs) and perf on Linux for benchmark profiling",
+      "Designing modular testing pipelines for automated instruction-level analysis and system performance benchmarking",
+      "Configuring Conda-based environments and dependency isolation for reproducible research workflows",
+      "Integrating results into CI pipelines to enable performance regression checks and anomaly detection",
+      "Contributing to ongoing research project at CNRS research center, with academic paper currently in development"
     ],
     technologies: ["Python", "C++", "ARM Cortex-A53", "Linux", "PMU", "perf", "Conda", "CI/CD"],
-    achievements: ["Advanced multicore performance modeling research", "Automated performance regression detection"],
-    keywords: ["AI", "embedded systems", "performance modeling", "ARM", "multicore", "research"]
+    achievements: ["Ongoing research project at CNRS LS2N", "Advanced multicore performance modeling research in progress"],
+    keywords: ["AI", "embedded systems", "performance modeling", "ARM", "multicore", "research", "CNRS", "ongoing project"]
   },
   {
     id: "exp2",
