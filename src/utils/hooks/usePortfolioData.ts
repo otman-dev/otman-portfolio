@@ -4,13 +4,15 @@ import {
   experiencesData, 
   projectsData, 
   skillsData, 
-  certificationsData, 
+  certificationsData,
+  competitionsData,
   educationData, 
   uiData,
   type Experience,
   type Project,
   type PortfolioData
 } from '../data';
+import { blogData } from '../data/blog';
 
 export const usePortfolioData = (): PortfolioData => {
   return useMemo(() => ({
@@ -21,6 +23,8 @@ export const usePortfolioData = (): PortfolioData => {
     projects: projectsData,
     skills: skillsData,
     certifications: certificationsData,
+    competitions: competitionsData,
+    blogPosts: blogData,
 
     // Helper functions
     getExperiencesByType: (type: string): Experience[] => 
